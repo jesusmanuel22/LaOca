@@ -1,4 +1,4 @@
-/*package edu.uclm.esi.tysweb.laoca.tests;
+package edu.uclm.esi.tysweb.laoca.tests;
 
 import java.util.regex.Pattern;
 import java.util.concurrent.TimeUnit;
@@ -115,4 +115,4 @@ public class TestLogin {
       acceptNextAlert = true;
     }
   }
-}*/
+}

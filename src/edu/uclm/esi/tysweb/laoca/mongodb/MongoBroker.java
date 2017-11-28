@@ -1,24 +1,46 @@
 package edu.uclm.esi.tysweb.laoca.mongodb;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.ConcurrentLinkedQueue;
+
 import org.bson.BsonDocument;
 import org.bson.BsonString;
 import org.bson.Document;
 
 import com.mongodb.MongoClient;
+import com.mongodb.MongoClientOptions;
+import com.mongodb.MongoCredential;
+import com.mongodb.ServerAddress;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 
 public class MongoBroker {
-	private MongoClient mongoClient;
+	private ConcurrentLinkedQueue<MongoClient> usadas, libres;
+	private MongoClient conexionPrivilegiada;
 	
 	private MongoBroker() {
-		this.mongoClient=new MongoClient("localhost", 27017);
+		MongoCredential credenciales=MongoCredential.createCredential("creadorDeUsuarios", 
+					"admin", "creadorDeUsuarios".toCharArray());
+		ServerAddress address=new ServerAddress("localhost");
+		List<MongoCredential> lista=Arrays.asList(credenciales);
+		this.conexionPrivilegiada=new MongoClient(address, lista);
+		
+		this.usadas=new ConcurrentLinkedQueue<>();
+		this.libres=new ConcurrentLinkedQueue<>();
+		
+		credenciales=MongoCredential.createCredential("jugador", "LaOca2017", "jugador".toCharArray());
+		lista=Arrays.asList(credenciales);
+		for (int i=0; i<10; i++) {
+			MongoClient conexion=new MongoClient(address, lista);
+			this.libres.add(conexion);
+		}
 	}
 	
 	public static void main(String[] args) {
 		MongoBroker broker=MongoBroker.get();
-		MongoDatabase db = broker.mongoClient.getDatabase("MACARIO");
+		MongoDatabase db = broker.conexionPrivilegiada.getDatabase("LaOca2017");
 		
 		if (db.getCollection("usuarios")==null)
 			db.createCollection("usuarios");
@@ -39,7 +61,7 @@ public class MongoBroker {
 		System.out.println(elementoBuscado.getString("email"));
 		System.out.println(elementoBuscado.getString("pwd"));
 		
-		broker.mongoClient.close();
+		broker.conexionPrivilegiada.close();
 	}
 	
 	private static class MongoBrokerHolder {
@@ -51,10 +73,29 @@ public class MongoBroker {
 	}
 
 	public MongoDatabase getDatabase(String databaseName) {
-		return mongoClient.getDatabase(databaseName);
+		return conexionPrivilegiada.getDatabase(databaseName);
 	}
 
 	public void close() {
-		this.mongoClient.close();
+		this.conexionPrivilegiada.close();
+	}
+
+	public MongoClient getDatabase(String databaseName, String email, String pwd) throws Exception {
+		MongoCredential credenciales=MongoCredential.createCredential(email, databaseName, pwd.toCharArray());
+		//ServerAddress address=new ServerAddress("alarcosj.esi.uclm.es");
+		ServerAddress address=new ServerAddress("localhost:27017");
+		List<MongoCredential> lista=Arrays.asList(credenciales);
+		return new MongoClient(address, lista);
+	}
+	
+	public MongoClient getConexionPrivilegiada() {
+		return this.conexionPrivilegiada;
 	}
 }
+
+
+
+
+
+
+

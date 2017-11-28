@@ -3,14 +3,13 @@ package edu.uclm.esi.tysweb.laoca.dominio;
 import java.io.File;
 import java.util.concurrent.ConcurrentHashMap;
 
-import edu.uclm.esi.tysweb.laoca.dao.BrokerConPool;
+import org.json.JSONObject;
 
 public class Manager {
 	private ConcurrentHashMap<String, Usuario> usuarios;
 	private ConcurrentHashMap<Integer, Partida> partidasPendientes;
 	private ConcurrentHashMap<Integer, Partida> partidasEnJuego;
 	private String webAppPath;
-	private String tipoDeBroker;
 	
 	private Manager() {
 		this.usuarios=new ConcurrentHashMap<>();
@@ -37,26 +36,21 @@ public class Manager {
 		}
 		return usuario;
 	}
-	
-	public void setTipoDeBroker(String tipoDeBroker) {
-		this.tipoDeBroker="edu.uclm.esi.tysweb.laoca.dao." + tipoDeBroker;
-	}
-	
-	public String getTipoDeBroker() {
-		return tipoDeBroker;
-	}
-	
-	public void addJugador(String nombreJugador) throws Exception {
+		
+	public Usuario addJugador(String nombreJugador) throws Exception {
 		if (this.partidasPendientes.isEmpty())
 			throw new Exception("No hay partidas pendientes. Crea una, pendejo");
 		Partida partida=this.partidasPendientes.elements().nextElement();
 		Usuario usuario=findUsuario(nombreJugador);
+		if (usuario.getPartida()!=null)
+			throw new Exception("El usuario ya está asociado a una partida. Desconéctate para crear una nueva o unirte a otra");
 		partida.add(usuario);
 		usuario.setPartida(partida);
 		if (partida.isReady()) {
 			this.partidasPendientes.remove(partida.getId());
 			this.partidasEnJuego.put(partida.getId(), partida);
 		}
+		return usuario;
 	}
 	
 	public void setWebAppPath(String webAppPath) {
@@ -82,10 +76,26 @@ public class Manager {
 		usuario.setNombre(email);
 		usuario.insert(pwd);
 	}
+	
+	public Usuario login(String email, String pwd) throws Exception {
+		return UsuarioRegistrado.login(email, pwd);
+	}
 
-	public void actualizarTablero(int idPartida, String jugador, int dado) {
+	public JSONObject tirarDado(int idPartida, String jugador, int dado) throws Exception {
 		Partida partida=this.partidasEnJuego.get(idPartida);
-		partida.actualizar(jugador, dado);
+		JSONObject mensaje=partida.tirarDado(jugador, dado);
+		mensaje.put("idPartida", idPartida);
+		mensaje.put("jugador", jugador);
+		partida.broadcast(mensaje);
+		if (mensaje!=null && mensaje.opt("ganador")!=null) {
+			terminar(partida);
+		}
+		return mensaje;
+	}
+
+	private void terminar(Partida partida) {
+		partida.terminar();
+		partidasEnJuego.remove(partida.getId());
 	}
 	
 }

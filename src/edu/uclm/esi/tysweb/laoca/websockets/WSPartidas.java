@@ -15,6 +15,7 @@ import javax.websocket.server.ServerEndpoint;
 import org.json.JSONObject;
 
 import edu.uclm.esi.tysweb.laoca.dominio.Manager;
+import edu.uclm.esi.tysweb.laoca.dominio.Partida;
 import edu.uclm.esi.tysweb.laoca.dominio.Usuario;
 
 @ServerEndpoint(value="/servidorDePartidas", configurator=HttpSessionConfigurator.class)
@@ -31,7 +32,12 @@ public class WSPartidas {
 		System.out.println("Sesión " + sesion.getId());
 		sesionesPorId.put(sesion.getId(), sesion);
 		sesionesPorNombre.put(usuario.getLogin(), sesion);
+
 		broadcast("Ha llegado " + usuario.getLogin());
+		
+		Partida partida=usuario.getPartida();
+		if (partida.isReady())
+			partida.comenzar();
 	}
 	
 	@OnClose
@@ -47,7 +53,10 @@ public class WSPartidas {
 			int idPartida=jso.getInt("idPartida");
 			String jugador=jso.getString("nombreJugador");
 			int dado=jso.getInt("puntos");
-			Manager.get().actualizarTablero(idPartida, jugador, dado);
+			try {
+				JSONObject mensaje=Manager.get().tirarDado(idPartida, jugador, dado);
+			} catch (Exception e) {
+			}
 		}
 	}
 
