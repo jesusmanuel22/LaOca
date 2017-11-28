@@ -1,4 +1,4 @@
-<%@page import="edu.uclm.esi.tysweb.laoca.dominio.Manager"%>
+<%@page import="edu.uclm.esi.tysweb.laoca.dominio.*"%>
 <%@page import="org.json.JSONObject"%>
 <%@ page language="java" contentType="application/json; charset=UTF-8"
     pageEncoding="UTF-8"%>
@@ -9,12 +9,12 @@
 	
 	JSONObject respuesta=new JSONObject();
 	try {
-		String tipoDeBroker=jso.getString("tipo");
-		if (tipoDeBroker==null || tipoDeBroker.trim().length()==0)
-			throw new Exception("Tipo de broker inválido");
-		Manager.get().setTipoDeBroker(tipoDeBroker);
+		String email=jso.optString("email");
+		String pwd=jso.optString("pwd");
+		
+		Usuario usuario=Manager.get().login(email, pwd);
+		session.setAttribute("usuario", usuario);
 		respuesta.put("result", "OK");
-		respuesta.put("mensaje", "Broker seleccionado: " + tipoDeBroker);		
 	}
 	catch (Exception e) {
 		respuesta.put("result", "ERROR");
@@ -22,3 +22,12 @@
 	}
 	out.println(respuesta.toString());
 %>
+
+
+
+
+
+
+
+
+
