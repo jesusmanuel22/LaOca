@@ -1,10 +1,11 @@
 package edu.uclm.esi.tysweb.laoca.dominio.tests;
 
+import static org.junit.Assert.*;
+
 import java.util.Random;
 
 import org.json.JSONObject;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 import edu.uclm.esi.tysweb.laoca.dominio.Manager;
 import edu.uclm.esi.tysweb.laoca.dominio.Partida;

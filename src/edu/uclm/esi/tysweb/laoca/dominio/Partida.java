@@ -1,10 +1,12 @@
 package edu.uclm.esi.tysweb.laoca.dominio;
 
-import java.util.Enumeration;
 import java.util.Random;
 import java.util.Vector;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import edu.uclm.esi.tysweb.laoca.websockets.WSPartidas;
 
 public class Partida {
 	private Vector<Usuario> jugadores;
@@ -34,12 +36,6 @@ public class Partida {
 		return this.jugadores.size()==this.numeroDeJugadores;
 	}
 
-	public void actualizar(String jugador, int dado) {
-		Enumeration<Usuario> eJugadores = jugadores.elements();
-		while (eJugadores.hasMoreElements())
-			eJugadores.nextElement().enviar(jugador, dado);
-	}
-
 	public void comenzar() {
 		JSONObject jso=new JSONObject();
 		jso.put("tipo", "COMIENZO");
@@ -55,6 +51,8 @@ public class Partida {
 	}
 
 	public Usuario getJugadorConElTurno() {
+		if (this.jugadores.size()==0)
+			return null;
 		return this.jugadores.get(this.jugadorConElTurno);
 	}
 
@@ -97,7 +95,7 @@ public class Partida {
 		}
 		int turnosSinTirar=destino.getTurnosSinTirar();
 		if (turnosSinTirar>0) {
-			result.put("mensajeAdicional", jugador.getLogin() + " estÃ¡ " + turnosSinTirar);
+			result.put("mensajeAdicional", jugador.getLogin() + " está " + turnosSinTirar + " turnos sin tirar porque ha caído en ");
 			jugador.setTurnosSinTirar(destino.getTurnosSinTirar());
 		}
 		result.put("jugadorConElTurno", pasarTurno(conservarTurno));
@@ -132,13 +130,15 @@ public class Partida {
 	}
 	
 	void broadcast(JSONObject jso) {
-		for (Usuario jugador : jugadores) {
+		for (int i=jugadores.size()-1; i>=0; i--) {
+			Usuario jugador=jugadores.get(i);
 			try {
 				jugador.enviar(jso);
 			}
 			catch (Exception e) {
-				// TODO: eliminar de la colecciÃ³n, mirar si la partida ha terminado
+				// TODO: eliminar de la colección, mirar si la partida ha terminado
 				// y decirle al WSServer que quite a este jugador
+				this.jugadores.remove(jugador);
 			}
 		}
 	}

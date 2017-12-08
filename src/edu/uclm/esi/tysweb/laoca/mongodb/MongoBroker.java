@@ -23,14 +23,14 @@ public class MongoBroker {
 	private MongoBroker() {
 		MongoCredential credenciales=MongoCredential.createCredential("creadorDeUsuarios", 
 					"admin", "creadorDeUsuarios".toCharArray());
-		ServerAddress address=new ServerAddress("localhost");
+		ServerAddress address=new ServerAddress("alarcosj.esi.uclm.es");
 		List<MongoCredential> lista=Arrays.asList(credenciales);
 		this.conexionPrivilegiada=new MongoClient(address, lista);
 		
 		this.usadas=new ConcurrentLinkedQueue<>();
 		this.libres=new ConcurrentLinkedQueue<>();
 		
-		credenciales=MongoCredential.createCredential("jugador", "LaOca2017", "jugador".toCharArray());
+		credenciales=MongoCredential.createCredential("jugador", "MACARIO", "jugador".toCharArray());
 		lista=Arrays.asList(credenciales);
 		for (int i=0; i<10; i++) {
 			MongoClient conexion=new MongoClient(address, lista);
@@ -40,7 +40,7 @@ public class MongoBroker {
 	
 	public static void main(String[] args) {
 		MongoBroker broker=MongoBroker.get();
-		MongoDatabase db = broker.conexionPrivilegiada.getDatabase("LaOca2017");
+		MongoDatabase db = broker.conexionPrivilegiada.getDatabase("MACARIO");
 		
 		if (db.getCollection("usuarios")==null)
 			db.createCollection("usuarios");
@@ -82,8 +82,7 @@ public class MongoBroker {
 
 	public MongoClient getDatabase(String databaseName, String email, String pwd) throws Exception {
 		MongoCredential credenciales=MongoCredential.createCredential(email, databaseName, pwd.toCharArray());
-		//ServerAddress address=new ServerAddress("alarcosj.esi.uclm.es");
-		ServerAddress address=new ServerAddress("localhost:27017");
+		ServerAddress address=new ServerAddress("alarcosj.esi.uclm.es");
 		List<MongoCredential> lista=Arrays.asList(credenciales);
 		return new MongoClient(address, lista);
 	}
