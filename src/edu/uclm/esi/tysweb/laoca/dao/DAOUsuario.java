@@ -117,6 +117,13 @@ public class DAOUsuario {
 		return usuario;
 	}
 
+	public static void cambiarContrasena(String email, String pwd1) {
+		// TODO Auto-generated method stub
+	
+		System.out.println("He llegado a cambiar Contrasena");
+		
+	}
+
 }
 
 

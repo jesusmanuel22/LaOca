@@ -10,4 +10,9 @@ public class UsuarioRegistrado extends Usuario {
 	public static Usuario login(String email, String pwd) throws Exception {
 		return DAOUsuario.login(email, pwd);
 	}
+
+	public static void cambiarContrasena(String email, String pwd1) {
+		DAOUsuario.cambiarContrasena(email, pwd1);
+	}
+	
 }

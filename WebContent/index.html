@@ -1,113 +1,99 @@
-<!DOCTYPE html>
-<html>
+<DOCTYPE html>
+<html lang="en">
 <head>
+	<title>La Oca</title>
 	<meta charset="UTF-8">
-	<title>Insert title here</title>
-	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->	
+	<link rel="icon" type="image/png" href="images/icons/favicon.ico"/>
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
+<!--===============================================================================================-->	
+	<link rel="stylesheet" type="text/css" href="vendor/css-hamburgers/hamburgers.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="css/util.css">
+	<link rel="stylesheet" type="text/css" href="css/main.css">
+<!--===============================================================================================-->
 </head>
 <body>
-	<div class="container" id="divRegistro">
-		<div class="row">
-			<div class="col-md-12">
-				<input type="text" placeholder="Correo electrónico" id="email"><br>
-				<input type="password" placeholder="Contraseña" id="pwd1"><br>
-				<input type="password" placeholder="Repite contraseña" id="pwd2"><br>
-				<button onclick="registrar()" id="btnRegistrar">Registrarse</button>
-				<span id="mensajeRegistro"></span>
-			</div> 
-		</div>
-	</div>
+	
+	<div class="limiter">
+		<div class="container-login100">
+			<div class="wrap-login100">
+				<div class="login100-pic js-tilt" data-tilt>
+					<img src="images/oca.png" alt="IMG">
+				</div>
 
-	<div class="container">
-		<div class="row">
-			<div class="col-md-8">
-				<label for="selectBroker">Tipo de Broker:</label>
-				<select id="selectBroker" onchange="selectBroker()">
-					<option></option>
-				</select>			
-				<div id="divDatosUsuario" style="display:none">
-					Nombre: <input type="text" id="nombre"><br>
-					Número de jugadores: <input type="number" id="numero"><br>
-					<button id="btnCrearPartida" onclick="crearPartida()">Crear</button>
-					<button id="btnUnirseAPartida" onclick="unirse()">Unirse</button>
-				</div>
-			</div>
-			<div class="col-md-4">
-				<div class="row">
-					<div id="divMensajes"></div>
-				</div>
-				<div class="row">
-					<div id="divChat"></div>
+				<div class="login100-form validate-form">
+					<span class="login100-form-title">
+						Acceso de Usuarios
+					</span>
+					<span id="mensajeRegistro"></span>
+
+					<div class="wrap-input100 validate-input" data-validate = "Se requiere un email válido: ex@abc.xyz">
+						<input class="input100" type="text" name="email" id="email" placeholder="Email">
+						<span class="focus-input100"></span>
+						<span class="symbol-input100">
+							<i class="fa fa-envelope" aria-hidden="true"></i>
+						</span>
+					</div>
+
+					<div class="wrap-input100 validate-input" data-validate = "Se requiere contraseña">
+						<input class="input100" type="password" name="pass" id="pwd1" placeholder="Contraseña">
+						<span class="focus-input100"></span>
+						<span class="symbol-input100">
+							<i class="fa fa-lock" aria-hidden="true"></i>
+						</span>
+					</div>
+					
+					<div class="container-login100-form-btn">
+						<button class="login100-form-btn" onclick="login()">
+							Entrar
+						</button>
+					</div>
+
+					<div class="text-center p-t-12">
+						<a class="txt2" href="contrasenaolvidada.html">
+							¿Olvidaste tu contraseña?
+						</a>
+					</div>
+
+					<div class="text-center p-t-12">
+						<a class="txt2" href="registro.html">
+							Crea Tu Cuenta
+							<i class="fa fa-long-arrow-right m-l-5" aria-hidden="true"></i>
+						</a>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 	
-	<div class="container" style="display:none" id="divTablero">
-		<div class="row">
-			<div class="col-md-12">
-				<svg id="svgTablero" width="500" height="500" style="background-color:grey">
-				</svg>
-			</div>
-		</div>
-	</div>
 	
+
 	
-	<script>
+<!--===============================================================================================-->	
+	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+<!--===============================================================================================-->
+	<script src="vendor/bootstrap/js/popper.js"></script>
+	<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+<!--===============================================================================================-->
+	<script src="vendor/select2/select2.min.js"></script>
+<!--===============================================================================================-->
+	<script src="vendor/tilt/tilt.jquery.min.js"></script>
+	<script >
+		$('.js-tilt').tilt({
+			scale: 1.1
+		})
 	</script>
-	
-	<script src="scripts/partidas.js"></script>
-	<script src="scripts/tablero.js"></script>
+<!--===============================================================================================-->
 	<script src="scripts/GestionCuentas.js"></script>
-	<script>
-	cargarBrokers();
-	
-	if (localStorage.nombre!=undefined)
-		document.getElementById("nombre").value=localStorage.nombre;	
-	
-	function cargarBrokers() {
-		var request = new XMLHttpRequest();	
-		request.open("get", "cargarBrokers.jsp");
-		request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-		request.onreadystatechange=function() {
-			if (request.readyState==4) {
-				var respuesta=JSON.parse(request.responseText);
-				if (respuesta.result=="OK") {
-					var brokers=respuesta.mensaje;
-					var selectBroker=document.getElementById("selectBroker");
-					for (var i=0; i<brokers.length; i++) {
-						var option=document.createElement("option");
-						option.value=brokers[i];
-						option.innerHTML=brokers[i];
-						selectBroker.appendChild(option);
-					}
-				} else {
-					divMensajes.innerHTML="Error: " + respuesta.mensaje;
-				}
-			}
-		};
-		request.send();	
-	}
-	
-	function selectBroker() {
-		var request = new XMLHttpRequest();	
-		request.open("post", "selectBroker.jsp");
-		request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-		request.onreadystatechange=function() {
-			if (request.readyState==4) {
-				var respuesta=JSON.parse(request.responseText);
-				if (respuesta.result=="OK") {
-					divMensajes.innerHTML=respuesta.mensaje;
-					document.getElementById("divDatosUsuario").setAttribute("style", "display:visible");
-				} else
-					divMensajes.innerHTML="Error: " + respuesta.mensaje;
-			}
-		};
-		var p = {
-			tipo : document.getElementById("selectBroker").value
-		};
-		request.send("p=" + JSON.stringify(p));		
-	}
-	</script>
+
 </body>
 </html>
