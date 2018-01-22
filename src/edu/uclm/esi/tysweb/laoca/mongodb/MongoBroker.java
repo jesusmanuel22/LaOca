@@ -88,7 +88,10 @@ public class MongoBroker {
 	}
 	
 	public MongoClient getConexionPrivilegiada() {
-		return this.conexionPrivilegiada;
+		MongoCredential credenciales = MongoCredential.createCredential("rootPrincipal", "LaOca2017", "root".toCharArray());
+        ServerAddress address = new ServerAddress("localhost");
+        List<MongoCredential> lista = Arrays.asList(credenciales);
+        return new MongoClient(address, lista);
 	}
 }
 

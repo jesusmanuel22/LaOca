@@ -49,12 +49,12 @@ public class WSPartidas {
 	@OnMessage
 	public void recibir(Session session, String msg) {
 		JSONObject jso=new JSONObject(msg);
-		if (jso.get("tipo").equals("DADO")) {
+		if (jso.getString("tipo").equals("dadoselanza")) {
 			int idPartida=jso.getInt("idPartida");
 			String jugador=jso.getString("nombreJugador");
 			int dado=jso.getInt("puntos");
 			try {
-				JSONObject mensaje=Manager.get().tirarDado(idPartida, jugador, dado);
+				JSONObject mensaje=Manager.get().tirarDado( idPartida,jugador, dado);
 			} catch (Exception e) {
 			}
 		}

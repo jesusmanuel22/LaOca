@@ -6,13 +6,33 @@ function registrar() {
 		if (request.readyState==4) {
 			var respuesta=JSON.parse(request.responseText);
 			if (respuesta.result=="OK")
-				divRegistro.style="display:none";
+				window.location.href="Tablero.html";
 			else
 				mensajeRegistro.innerHTML=respuesta.mensaje;
 		}
 	};
 	var p = {
 		email : email.value, pwd1 : pwd1.value, pwd2 : pwd2.value 
+	};
+	request.send("p=" + JSON.stringify(p));	
+}
+
+function login() {
+	var request = new XMLHttpRequest();	
+	request.open("post", "login.jsp");
+	request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	request.onreadystatechange=function() {
+		if (request.readyState==4) {
+			var respuesta=JSON.parse(request.responseText);
+			if (respuesta.result=="OK"){
+				sessionStorage.setItem('email', email.value);
+				window.location.href="Tablero.html";
+			}else
+				mensajeRegistro.innerHTML=respuesta.mensaje;
+		}
+	};
+	var p = {
+		email : email.value, pwd1 : pwd1.value
 	};
 	request.send("p=" + JSON.stringify(p));	
 }

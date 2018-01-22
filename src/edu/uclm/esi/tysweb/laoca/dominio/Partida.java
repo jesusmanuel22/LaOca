@@ -11,7 +11,7 @@ import edu.uclm.esi.tysweb.laoca.websockets.WSPartidas;
 public class Partida {
 	private Vector<Usuario> jugadores;
 	private int numeroDeJugadores;
-	private int id;
+	private static int id=0;
 	private int jugadorConElTurno;
 	private Tablero tablero;
 	private Usuario ganador;
@@ -20,7 +20,7 @@ public class Partida {
 		this.jugadores=new Vector<>();
 		this.jugadores.add(creador);
 		this.numeroDeJugadores=numeroDeJugadores;
-		this.id=new Random().nextInt();
+		this.id++;
 		this.tablero=new Tablero();
 	}
 
@@ -36,7 +36,10 @@ public class Partida {
 		return this.jugadores.size()==this.numeroDeJugadores;
 	}
 
+	
 	public void comenzar() {
+		//int jugadorConTurno= seleccionTurnoAleatorio (jugadores.size());
+		//int aux=0;
 		JSONObject jso=new JSONObject();
 		jso.put("tipo", "COMIENZO");
 		jso.put("idPartida", this.id);
@@ -45,6 +48,7 @@ public class Partida {
 		jso.put("jugadorConElTurno", getJugadorConElTurno().getLogin());
 		for (Usuario jugador : jugadores) 
 			jsa.put(jugador.getLogin());
+		//js.oput("numerojugadores", jugadores.size());
 		jso.put("jugadores", jsa);
 		
 		broadcast(jso);

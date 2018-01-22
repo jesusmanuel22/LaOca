@@ -6,6 +6,7 @@ import java.security.NoSuchAlgorithmException;
 
 import org.bson.BsonArray;
 import org.bson.BsonDocument;
+import org.bson.BsonInt32;
 import org.bson.BsonString;
 import org.bson.BsonValue;
 import org.bson.conversions.Bson;
@@ -28,7 +29,7 @@ public class DAOUsuario {
 		criterio.append("email", new BsonString(nombreJugador));
 		
 		MongoClient conexion=broker.getConexionPrivilegiada();
-		MongoDatabase db=conexion.getDatabase("MACARIO");
+		MongoDatabase db=conexion.getDatabase("LaOca2017");
 		MongoCollection<BsonDocument> usuarios = db.getCollection("usuarios", BsonDocument.class);
 		BsonDocument usuario=usuarios.find(criterio).first();
 		return usuario!=null;
@@ -37,22 +38,37 @@ public class DAOUsuario {
 	public static void insert(Usuario usuario, String pwd) throws Exception {
 		BsonDocument bUsuario=new BsonDocument();
 		bUsuario.append("email", new BsonString(usuario.getLogin()));
+		bUsuario.put("pwd", new BsonString(pwd));
+		bUsuario.put("Puntuacion", new BsonInt32(0));
 		
+	
 		MongoClient conexion=MongoBroker.get().getConexionPrivilegiada();
 		MongoCollection<BsonDocument> usuarios = 
-				conexion.getDatabase("MACARIO").getCollection("usuarios", BsonDocument.class);
-		try {
+				conexion.getDatabase("LaOca2017").getCollection("usuarios", BsonDocument.class);
+
+		if(existe(usuario.getLogin())==false) {
 			usuarios.insertOne(bUsuario);
-			crearComoUsuarioDeLaBD(usuario, pwd);
+		}else {
+			throw new Exception("Usuario ya est� registrado");
+
+		}
+		conexion.close();
+
+		/*try {
+			usuarios.insertOne(bUsuario);
 		}
 		catch (MongoWriteException e) {
 			if (e.getCode()==11000)
 				throw new Exception("¿No estarás ya registrado, chaval/chavala?");
 			throw new Exception("Ha pasado algo muy malorrr");
 		}
+		finally {
+			conexion.close();
+		}
+		*/
 	}
 
-	private static void crearComoUsuarioDeLaBD(Usuario usuario, String pwd) throws Exception {
+	/*private static void crearComoUsuarioDeLaBD(Usuario usuario, String pwd) throws Exception {
 		BsonDocument creacionDeUsuario=new BsonDocument();
 		creacionDeUsuario.append("createUser", new BsonString(usuario.getLogin()));
 		creacionDeUsuario.append("pwd", new BsonString(pwd));
@@ -64,7 +80,7 @@ public class DAOUsuario {
 		creacionDeUsuario.append("roles", roles);
 
 		MongoBroker.get().getConexionPrivilegiada().getDatabase("MACARIO").runCommand(creacionDeUsuario);
-	}
+	}*/
 
 	private static BsonString encriptar(String pwd) throws Exception {
 		MessageDigest md = MessageDigest.getInstance("MD5");
@@ -79,18 +95,24 @@ public class DAOUsuario {
 	}
 
 	public static Usuario login(String email, String pwd) throws Exception {
-		MongoClient conexion=MongoBroker.get().getDatabase("MACARIO", email, pwd);
+		MongoClient conexion=MongoBroker.get().getConexionPrivilegiada();
 		
 		BsonDocument criterio=new BsonDocument();
 		criterio.append("email", new BsonString(email));
+		criterio.append("pwd", new BsonString(pwd));
+
 		MongoCollection<BsonDocument> usuarios=
-				conexion.getDatabase("MACARIO").getCollection("usuarios", BsonDocument.class);
+				conexion.getDatabase("LaOca2017").getCollection("usuarios", BsonDocument.class);
 		FindIterable<BsonDocument> resultado = usuarios.find(criterio);
 		Usuario usuario=null;
 		if (resultado.first()!=null) {
 			usuario=new UsuarioRegistrado();
 			usuario.setNombre(email);
-		} 
+		} else {
+			//throw new Exception("Ha fallado algo en el login");
+			usuario=new Usuario();
+			usuario.setNombre(email);
+		}
 		conexion.close();
 		return usuario;
 	}

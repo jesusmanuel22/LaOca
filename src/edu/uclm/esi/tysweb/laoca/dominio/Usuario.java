@@ -17,7 +17,7 @@ public class Usuario {
 
 	public Usuario(String nombreJugador) throws Exception {
 		//if (!DAOUsuario.existe(nombreJugador))
-		//	throw new Exception("Usuario no registrado");
+			//throw new Exception("Usuario no registrado");
 		this.login=nombreJugador;
 	}
 

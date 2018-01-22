@@ -12,7 +12,7 @@
 		String email=jso.optString("email");
 		String pwd1=jso.optString("pwd1");
 		String pwd2=jso.optString("pwd2");
-		
+		//Manager.get().
 		comprobarCredenciales(email, pwd1, pwd2);
 		
 		Manager.get().registrar(email, pwd1);
@@ -29,6 +29,7 @@
 private void comprobarCredenciales(String email, String pwd1, String pwd2) throws Exception {
 	if (email.length()==0)
 		throw new Exception("El email no puede ser vacío");
+	
 	if (!pwd1.equals(pwd2))
 		throw new Exception("Las contraseñas no coinciden");
 	if (pwd1.length()<4)
