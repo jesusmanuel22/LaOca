@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>La 0ca</title>
+</head>
+<body style="background-color:#66FFFF;">
+
+	<!--  Nombre: <input type="text" id="nombre"><br>
+	Número de jugadores: <input type="number" id="numero"><br>
+	<button onclick="crearPartida()">Crear</button>
+	<br>
+	<button onclick="unirse()">Unirse</button>
+	-->
+	 passvieja: <input type="text" id="pwd1">
+	  pass1nueva: <input type="text" id="pwd1New">
+	   pass2nueva: <input type="text" id="pwd2New">
+	 Nombre: <input type="text" id="nombre">
+	<div style="text-align:center;">
+		<svg id="tablero" width="550" height="550" stroke="black" stroke-width="3" style="background-color:#66FFFF"></svg>
+	</div>
+	<script>
+	if (sessionStorage.getItem('email')!=null)
+		document.getElementById("nombre").value=sessionStorage.getItem('email');	
+	</script>
+	<button type="button" onclick="lanzarDado()"> Lanzar Dado </button>
+	N_jugadores: <input type="text" id="njugadores">
+	<button type="button" onclick="crearPartida()"> Crear Partida </button>
+	<button type="button" onclick="unirse()">Unirse </button>
+	<!-- Creamos cookie en login y lees de la cookie no pasas xD -->
+	<script src="scripts/partidas.js"></script>
+	<script src="scripts/tablero.js"></script>
+	<script src="scripts/GestionCuentas.js"></script>
+	
+	<script>
+	var tablero=new Tablero();
+	var lienzo=document.getElementById("tablero");
+	tablero.dibujar(lienzo);
+	</script>
+</body>
+</html>
