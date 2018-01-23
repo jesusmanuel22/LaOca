@@ -29,7 +29,7 @@ public class WSPartidas {
 		Usuario usuario=(Usuario) httpSession.getAttribute("usuario");
 		usuario.setWSSession(sesion);
 		
-		System.out.println("Sesión " + sesion.getId());
+		System.out.println("Sesion " + sesion.getId());
 		sesionesPorId.put(sesion.getId(), sesion);
 		sesionesPorNombre.put(usuario.getLogin(), sesion);
 
@@ -55,6 +55,7 @@ public class WSPartidas {
 			int dado=jso.getInt("puntos");
 			try {
 				JSONObject mensaje=Manager.get().tirarDado( idPartida,jugador, dado);
+				
 			} catch (Exception e) {
 			}
 		}

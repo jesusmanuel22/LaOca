@@ -33,13 +33,18 @@ public class Partida {
 	}
 
 	public boolean isReady() {
+		boolean si=this.jugadores.size()==this.numeroDeJugadores;
+		System.out.println(si);
+		System.out.println(jugadores.size()+" esto tiene que ser dos: (numero escrito al crear partida)"+numeroDeJugadores);
 		return this.jugadores.size()==this.numeroDeJugadores;
+
 	}
 
 	
 	public void comenzar() {
 		//int jugadorConTurno= seleccionTurnoAleatorio (jugadores.size());
 		//int aux=0;
+		System.out.println("COMIENZA LA PARTIDA");
 		JSONObject jso=new JSONObject();
 		jso.put("tipo", "COMIENZO");
 		jso.put("idPartida", this.id);

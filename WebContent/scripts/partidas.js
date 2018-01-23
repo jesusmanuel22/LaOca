@@ -1,4 +1,5 @@
 var ws;
+var idPartida;
 function crearPartida() {
 	var request = new XMLHttpRequest();	
 	request.open("post", "crearPartida.jsp");
@@ -10,7 +11,6 @@ function crearPartida() {
 				//divMensajes.innerHTML="Creación de partida (" + respuesta.mensaje + ") solicitada";
 				console.log("Creación de partida (" + respuesta.mensaje + ") solicitada");
 				conectarWebSocket();
-				localStorage.nombre=document.getElementById("nombre").value;
 			} else {
 				//divMensajes.innerHTML="Error: " + respuesta.mensaje;
 				console.log("Error: " + respuesta.mensaje);
@@ -63,6 +63,16 @@ function conectarWebSocket() {
 		} 
 		if(mensaje.tipo=="COMIENZO"){
 			//Fichas, relleno de jugadores...
+			//Dibujar fichas con id de Jugador
+			idPartida=mensaje.idPartida; //meter en el areatext de partida
+			addMensaje(mensaje.jugadores); //meter en el areatext de jugadores
+			
+		if(mensaje.tipo=="TIRADA"){
+			
+			//guardar datos de numero de dado, si ha ganado, 
+			//moverFicha()
+		}
+
 		}
 	}
 	ws.onclose=function(){
@@ -80,10 +90,10 @@ function addMensaje(texto) {
 
 function lanzarDado(){
 	var p = {
-	        tipo: "dadoselanza",
+	        tipo: "dadoselanza",	
 	        nombreJugador: document.getElementById("nombre").value,
-	        puntos: getRandomArbitrary(1, 6)
-	       // idPartida: idPartida
+	        puntos: getRandomArbitrary(1, 6),
+	        idPartida: idPartida
 	    };
 
 	   ws.send(JSON.stringify(p));

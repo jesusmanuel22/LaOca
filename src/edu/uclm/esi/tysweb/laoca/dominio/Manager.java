@@ -76,8 +76,8 @@ public class Manager {
 		usuario.setNombre(email);
 		usuario.insert(pwd);
 	}
-	public void cambiarContrasena(String email, String pwd1) throws Exception {
-		UsuarioRegistrado.cambiarContrasena(email, pwd1);
+	public void cambiarContrasena(String email,String pwdvieja, String pwd1) throws Exception {
+		UsuarioRegistrado.cambiarContrasena(email,pwdvieja, pwd1);
 	}
 	
 	public Usuario login(String email, String pwd) throws Exception {

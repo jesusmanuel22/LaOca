@@ -16,6 +16,7 @@ import com.mongodb.MongoWriteException;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.UpdateOneModel;
 
 import edu.uclm.esi.tysweb.laoca.dominio.Usuario;
 import edu.uclm.esi.tysweb.laoca.dominio.UsuarioRegistrado;
@@ -95,31 +96,59 @@ public class DAOUsuario {
 	}
 
 	public static Usuario login(String email, String pwd) throws Exception {
-		MongoClient conexion=MongoBroker.get().getConexionPrivilegiada();
-		
-		BsonDocument criterio=new BsonDocument();
-		criterio.append("email", new BsonString(email));
-		criterio.append("pwd", new BsonString(pwd));
-
-		MongoCollection<BsonDocument> usuarios=
-				conexion.getDatabase("LaOca2017").getCollection("usuarios", BsonDocument.class);
-		FindIterable<BsonDocument> resultado = usuarios.find(criterio);
 		Usuario usuario=null;
-		if (resultado.first()!=null) {
-			usuario=new UsuarioRegistrado();
-			usuario.setNombre(email);
-		} else {
-			//throw new Exception("Ha fallado algo en el login");
-			usuario=new Usuario();
-			usuario.setNombre(email);
+		if(email.indexOf("@")!=-1) {
+			MongoClient conexion=MongoBroker.get().getConexionPrivilegiada();
+			
+			BsonDocument criterio=new BsonDocument();
+			BsonDocument criterioEmail=new BsonDocument();
+			criterioEmail.append("email", new BsonString(email));
+			criterio.append("email", new BsonString(email));
+			criterio.append("pwd", new BsonString(pwd));
+			
+			MongoCollection<BsonDocument> usuarios=
+					conexion.getDatabase("LaOca2017").getCollection("usuarios", BsonDocument.class);
+			FindIterable<BsonDocument> resultado = usuarios.find(criterio); //criterio de credenciales correctas
+			FindIterable<BsonDocument> resultadoEmail = usuarios.find(criterioEmail); 
+			
+			if (resultado.first()!=null) {
+				usuario=new UsuarioRegistrado();
+				usuario.setNombre(email);
+			} else {
+				//throw new Exception("Ha fallado algo en el login");
+				if (resultadoEmail.first()!=null) {
+					throw new Exception("Este correo ya está registrado");
+				}else {
+					usuario=new Usuario();
+					usuario.setNombre(email);
+				}
+			}
+			conexion.close();
+		}else {
+			throw new Exception("El campo email debe ser valido");
+
 		}
-		conexion.close();
 		return usuario;
+
 	}
 
-	public static void cambiarContrasena(String email, String pwd1) {
+	public static void cambiarContrasena(String email, String pwdvieja, String pwd1) {
 		// TODO Auto-generated method stub
-	
+		MongoClient conexion=MongoBroker.get().getConexionPrivilegiada();
+		BsonDocument criterioActualizacion=new BsonDocument();
+		BsonDocument criterio=new BsonDocument();
+		criterioActualizacion.append("email", new BsonString(email));
+		criterioActualizacion.append("pwd", new BsonString(pwdvieja));
+		criterio.append("pwd", new BsonString(pwd1));
+		MongoCollection<BsonDocument> usuarios=
+				conexion.getDatabase("LaOca2017").getCollection("usuarios", BsonDocument.class);
+		try {
+			usuarios.updateOne(criterioActualizacion, new BsonDocument("$set",criterio));
+		} catch (Exception e) {
+			System.out.println("La contraseña vieja no coinciden");
+		}
+		
+		conexion.close();
 		System.out.println("He llegado a cambiar Contrasena");
 		
 	}
