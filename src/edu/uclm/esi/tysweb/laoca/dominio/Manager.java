@@ -5,6 +5,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.json.JSONObject;
 
+import edu.uclm.esi.tysweb.laoca.dao.DAOUsuario;
+
 public class Manager {
 	private ConcurrentHashMap<String, Usuario> usuarios;
 	private ConcurrentHashMap<Integer, Partida> partidasPendientes;
@@ -83,7 +85,9 @@ public class Manager {
 	public Usuario login(String email, String pwd) throws Exception {
 		return UsuarioRegistrado.login(email, pwd);
 	}
-
+	public boolean existe(String nombreJugador) throws Exception {
+		return DAOUsuario.existe(nombreJugador);
+	}
 	public JSONObject tirarDado(int idPartida, String jugador, int dado) throws Exception {
 		Partida partida=this.partidasEnJuego.get(idPartida);
 		JSONObject mensaje=partida.tirarDado(jugador, dado);

@@ -28,14 +28,16 @@
 	<button type="button" onclick="crearPartida()"> Crear Partida </button>
 	<button type="button" onclick="unirse()">Unirse </button>
 	<!-- Creamos cookie en login y lees de la cookie no pasas xD -->
+
 	<script src="scripts/partidas.js"></script>
 	<script src="scripts/tablero.js"></script>
 	<script src="scripts/GestionCuentas.js"></script>
 	
 	<script>
-	var tablero=new Tablero();
+	var jugadores = [];
 	var lienzo=document.getElementById("tablero");
-	tablero.dibujar(lienzo);
+	var tablero=new Tablero(lienzo);
+	tablero.dibujar();
 	</script>
 </body>
 </html>

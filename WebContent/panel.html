@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Menú</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--===============================================================================================-->
+    <link rel="icon" type="image/png" href="images/icons/favicon.ico"/>
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="vendor/css-hamburgers/hamburgers.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="css/util.css">
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <!--===============================================================================================-->
+</head>
+<body>
+    <div class="container-login100">
+        <div class="wrap-login100">
+            <div>
+                <div class="container-login100-form-btn">
+                    <button class="login100-form-btn left" onclick="location.href='Tablero.html'">
+                        <i class="fa fa-gamepad m-l-5 m-r-15" aria-hidden="true"></i>
+                        <span>Jugar</span>
+                    </button>
+                </div>
+                <div class="container-login100-form-btn">
+                    <button class="login100-form-btn left" onclick="ranking()" id="boton_ranking">
+                        <i class="fa fa-trophy   m-l-5 m-r-15" aria-hidden="true"></i>
+                        Ranking
+                    </button>
+                </div>
+                <div class="container-login100-form-btn">
+                    <button class="login100-form-btn left" onclick="cambiar_contraseña()" id="boton_cambiar">
+                        <i class="fa fa-key m-l-5 m-r-15" aria-hidden="true"></i>
+                        Cambiar contraseña
+                    </button>
+                </div>
+                <div class="container-login100-form-btn">
+                    <button class="login100-form-btn left">
+                        <i class="fa fa-picture-o m-l-5 m-r-15" aria-hidden="true"></i>
+                        Cambiar foto
+                    </button>
+                </div>
+                <div class="container-login100-form-btn">
+                    <button class="login100-form-btn left">
+                        <i class="fa fa-power-off m-l-5 m-r-15" aria-hidden="true"></i>
+                        Salir
+                    </button>
+                </div>
+
+            </div>
+            <div id="ranking" class="panel">
+                <div class="container">
+                    <header>
+                        <h1>Clasificación por victorias</h1>
+                    </header>
+                    <div class="table-responsive" style="width: 90%;">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>Posición</th>
+                                <th>Usuario</th>
+                                <th>Victorias</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div id="cambiar_contraseña" class="panel">
+                <span class="login100-form-title">
+						Modificar contraseña
+                </span>
+                <div class="wrap-input100 validate-input">
+                    <input class="input100" id="pwd1" type="password" name="pass" placeholder="Introduce tu contraseña actual">
+                    <span class="focus-input100"></span>
+                    <span class="symbol-input100">
+							<i class="fa fa-lock" aria-hidden="true"></i>
+						</span>
+                </div>
+                <div class="wrap-input100 validate-input">
+                    <input class="input100" id="pwd1New" type="password" name="pass" placeholder="Introduce la nueva contraseña.">
+                    <span class="focus-input100"></span>
+                    <span class="symbol-input100">
+							<i class="fa fa-lock" aria-hidden="true"></i>
+						</span>
+                </div>
+                <div class="wrap-input100 validate-input">
+                    <input class="input100" id="pwd2New" type="password" name="pass" placeholder="Repite la nueva contraseña">
+                    <span class="focus-input100"></span>
+                    <span class="symbol-input100">
+							<i class="fa fa-lock" aria-hidden="true"></i>
+						</span>
+                </div>
+                <div class="container-login100-form-btn">
+                    <button class="login100-form-btn" onclick="cambiarPass()">
+                        Modificar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+<!--===============================================================================================-->
+<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+<!--===============================================================================================-->
+<script src="vendor/bootstrap/js/popper.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+<!--===============================================================================================-->
+<script src="vendor/select2/select2.min.js"></script>
+<!--===============================================================================================-->
+<script src="vendor/tilt/tilt.jquery.min.js"></script>
+<script src="scripts/GestionCuentas.js"></script>
+
+<script >
+		$('.js-tilt').tilt({
+			scale: 1.1
+		})
+	</script>
+<!--===============================================================================================-->
+<script src="js/panel.js"></script>
+
+</body>
+</html>

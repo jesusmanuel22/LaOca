@@ -1,5 +1,7 @@
 var ws;
 var idPartida;
+var arr;
+
 function crearPartida() {
 	var request = new XMLHttpRequest();	
 	request.open("post", "crearPartida.jsp");
@@ -43,7 +45,8 @@ function unirse() {
 	request.send("p=" + JSON.stringify(p));
 }
 
-
+var jugadorTurno;
+var numerojugadores;
 
 function conectarWebSocket() {
 	ws=new WebSocket("ws://localhost:8080/LaOca2017/servidorDePartidas");
@@ -60,20 +63,41 @@ function conectarWebSocket() {
 		mensaje=JSON.parse(mensaje);
 		if (mensaje.tipo=="DIFUSION") {
 			addMensaje(mensaje.mensaje);
+			console.log("eeee");
 		} 
 		if(mensaje.tipo=="COMIENZO"){
-			//Fichas, relleno de jugadores...
-			//Dibujar fichas con id de Jugador
+			jugadorTurno=mensaje.jugadorConElTurno;
+			if(sessionStorage.nombre==jugadorTurno){
+				//habilito el boton
+			}
+			numerojugadores=mensaje.numerojugadores;
 			idPartida=mensaje.idPartida; //meter en el areatext de partida
-			addMensaje(mensaje.jugadores); //meter en el areatext de jugadores
-			
-		if(mensaje.tipo=="TIRADA"){
-			
-			//guardar datos de numero de dado, si ha ganado, 
-			//moverFicha()
-		}
+			//addMensaje(mensaje.jugadores); //meter en el areatext de jugadores
+			tablero.pintarFichas(mensaje.jugadores);//pintar fichar
 
 		}
+		if(mensaje.tipo=="TIRADA"){
+
+
+			var casillaOrigen=mensaje.casillaOrigen;
+			var numeroDelDado=mensaje.dado;
+			//var destinoInicial=mensaje.ca;
+			var destinoFinal=mensaje.destinoInicial;
+			var mensaje1=mensaje.mensaje;
+			
+			if(mensaje.jugadorConElTurno!=null){
+				//habilitar botón de tirar
+				
+				jugadorTurno=mensaje.jugadorConElTurno;
+			}
+			if(mensaje.ganador!=null){
+				var ganador=mensaje.ganador;
+			}
+
+			tablero.moverFicha(jugadorTurno, destinoFinal);
+		}
+
+		
 	}
 	ws.onclose=function(){
 		addMensaje("Websocket cerrado");

@@ -44,7 +44,6 @@ public class Partida {
 	public void comenzar() {
 		//int jugadorConTurno= seleccionTurnoAleatorio (jugadores.size());
 		//int aux=0;
-		System.out.println("COMIENZA LA PARTIDA");
 		JSONObject jso=new JSONObject();
 		jso.put("tipo", "COMIENZO");
 		jso.put("idPartida", this.id);
@@ -53,7 +52,7 @@ public class Partida {
 		jso.put("jugadorConElTurno", getJugadorConElTurno().getLogin());
 		for (Usuario jugador : jugadores) 
 			jsa.put(jugador.getLogin());
-		//js.oput("numerojugadores", jugadores.size());
+		jso.put("numerojugadores", jugadores.size());
 		jso.put("jugadores", jsa);
 		
 		broadcast(jso);
@@ -127,6 +126,7 @@ public class Partida {
 		return getJugadorConElTurno().getLogin();
 	}
 
+	
 	private Usuario findJugador(String nombreJugador) {
 		for (Usuario jugador : jugadores)
 			if (jugador.getLogin().equals(nombreJugador))
@@ -139,6 +139,7 @@ public class Partida {
 	}
 	
 	void broadcast(JSONObject jso) {
+		System.out.println(jso);
 		for (int i=jugadores.size()-1; i>=0; i--) {
 			Usuario jugador=jugadores.get(i);
 			try {

@@ -188,7 +188,11 @@ iframe {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  padding: 177px 130px 33px 95px;
+  padding: 67px 40px 33px 40px;
+}
+.w1260{
+    width:1260px;
+    display: block;
 }
 
 /*------------------------------------------------------------------
@@ -235,7 +239,6 @@ iframe {
   line-height: 1.5;
   color: #666666;
 
-  display: block;
   width: 100%;
   background: #e6e6e6;
   height: 50px;
@@ -348,6 +351,10 @@ iframe {
   transition: all 0.4s;
 }
 
+.left {
+    justify-content: left;
+}
+
 .login100-form-btn:hover {
   background: #333333;
 }
@@ -361,7 +368,7 @@ iframe {
 
 @media (max-width: 992px) {
   .wrap-login100 {
-    padding: 177px 90px 33px 85px;
+    padding: 10px 90px 33px 85px;
   }
 
   .login100-pic {
@@ -375,7 +382,7 @@ iframe {
 
 @media (max-width: 768px) {
   .wrap-login100 {
-    padding: 100px 80px 33px 80px;
+    padding: 10px 80px 33px 80px;
   }
 
   .login100-pic {
@@ -389,7 +396,7 @@ iframe {
 
 @media (max-width: 576px) {
   .wrap-login100 {
-    padding: 100px 15px 33px 15px;
+    padding: 10px 15px 33px 15px;
   }
 }
 
@@ -459,4 +466,80 @@ iframe {
     visibility: visible;
     opacity: 1;
   }
+}
+
+/*------------------------------------------------------------------
+[ PANEL ]*/
+
+.container > header {
+	margin: 0 auto;
+	padding: 1em;
+	text-align: center;
+}
+
+.container > header h1 {
+	font-family: Poppins-Bold;
+      font-size: 24px;
+      color: #333333;
+      line-height: 1.2;
+      text-align: center;
+      width: 100%;
+      display: block;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    background: #fff;
+}
+
+th {
+    background-color: #326295;
+    font-weight: bold;
+    color: #fff;
+    white-space: nowrap;
+}
+
+td, th {
+    padding: 1em 1.5em;
+    text-align: left;
+}
+
+tbody th {
+	background-color: #2ea879;
+}
+tbody tr:nth-child(2n-1) {
+    background-color: #f5f5f5;
+    transition: all .125s ease-in-out;
+}
+tbody tr:hover {
+    background-color: rgba(50,98,149,.3);
+}
+
+td.rank {
+	text-transform: capitalize;
+}
+
+.panel {
+    display:none;
+}
+
+/*TABLERO*/
+
+.contenedor{
+background: #b0abda;
+border-radius: 10px;
+padding: 15px;
+margin-bottom: 15px;
+}
+
+textarea{
+height: 100px;
+width: 100%;
+margin-top: 10px;
+}
+
+ul, li {
+    list-style-type: disc;
+    margin-left: 15px;
 }

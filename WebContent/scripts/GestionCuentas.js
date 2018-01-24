@@ -25,7 +25,7 @@ function cambiarPass() {
 		if (request.readyState==4) {
 			var respuesta=JSON.parse(request.responseText);
 			if (respuesta.result=="OK"){
-				window.location.href="Tablero.html";
+				window.location.href="panel.html";
 			}else
 				console.log(respuesta.mensaje);
 				//mensajeRegistro.innerHTML=respuesta.mensaje;
@@ -46,8 +46,15 @@ function login() {
 		if (request.readyState==4) {
 			var respuesta=JSON.parse(request.responseText);
 			if (respuesta.result=="OK"){
-				sessionStorage.setItem('email', email.value);
-				window.location.href="Tablero.html";
+				if(respuesta.reg=="si"){
+					sessionStorage.setItem('email', email.value);
+					window.location.href="panel.html";
+				}else{
+					sessionStorage.setItem('email', email.value);
+					window.location.href="Tablero.html";
+				
+				}
+				
 			}else
 				mensajeRegistro.innerHTML=respuesta.mensaje;
 		}

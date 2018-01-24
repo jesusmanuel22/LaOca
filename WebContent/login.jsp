@@ -15,8 +15,16 @@
 		Usuario usuario=Manager.get().login(email, pwd);
 		session.setAttribute("usuario", usuario);
 		respuesta.put("result", "OK");
+		if(Manager.get().existe(usuario.getLogin())==false){
+			respuesta.put("reg","no");
+		}else{
+			respuesta.put("reg","si");
+
+		}
+		
 	}
 	catch (Exception e) {
+		
 		respuesta.put("result", "ERROR");
 		respuesta.put("mensaje", e.getMessage());
 	}

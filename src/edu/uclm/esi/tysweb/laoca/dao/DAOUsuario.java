@@ -121,6 +121,7 @@ public class DAOUsuario {
 				}else {
 					usuario=new Usuario();
 					usuario.setNombre(email);
+					
 				}
 			}
 			conexion.close();
