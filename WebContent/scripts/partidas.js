@@ -81,8 +81,9 @@ function conectarWebSocket() {
 			idPartida=mensaje.idPartida; //meter en el areatext de partida
 			addMensaje(mensaje.jugadores); //meter en el areatext de jugadores
 			tablero.pintarFichas(mensaje.jugadores);//pintar fichar
-            var mensaje=document.getElementById("chat");
-            mensaje.value+="Comienza la partida con el número "+idPartida+"\n";
+            var mensajeChat=document.getElementById("chat");
+            mensajeChat.value+="Comienza la partida con el número "+idPartida+".\n\n";
+            mensajeChat.value+="Es el turno del usuario: "+ jugadorTurno+".\n\n";
 		}
 		if(mensaje.tipo=="TIRADA"){
 
@@ -97,14 +98,18 @@ function conectarWebSocket() {
 				
 				botonEnviar.disabled=true;
 				jugadorTurno=mensaje.jugadorConElTurno;
-			}else{
+			}
+			if(sessionStorage.email==jugadorTurno){
+				//habilito el boton
+				var botonEnviar = document.getElementById("lanzarDado");
 				botonEnviar.disabled=false;
-
 			}
 			if(mensaje.ganador!=null){
 				var ganador=mensaje.ganador;
 			}
 			console.log("Destino inicial: "+mensaje.destinoInicial+" DestinoFinal: "+destinoFinal);
+			var mensajeChat=document.getElementById("chat");
+			mensajeChat.value+="El usuario "+jugadorQueMueve+" ha sacado: "+numeroDelDado+".\n\n";
 			if(destinoFinal!=null){
 				tablero.moverFicha(jugadorQueMueve, mensaje.destinoInicial);
 				setTimeout(tablero.moverFicha(jugadorQueMueve, mensaje.destinoFinal),5000);
@@ -113,7 +118,11 @@ function conectarWebSocket() {
 				destinoFinal=mensaje.destinoInicial;
 				tablero.moverFicha(jugadorQueMueve, destinoFinal);
 			}
-				
+			if(mensaje.mensaje!=null){
+				mensajeChat.value+=mensaje.mensaje+"\n\n";
+			}
+			
+			mensajeChat.value+="Es el turno del usuario: "+ jugadorTurno+".\n\n";
 			
 			
 
