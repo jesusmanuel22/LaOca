@@ -99,6 +99,15 @@ public class Manager {
 		}
 		return mensaje;
 	}
+	public JSONObject mensajeChat(int idPartida, String jugador, String mensajeChat) throws Exception {
+		Partida partida=this.partidasEnJuego.get(idPartida);
+		JSONObject mensaje=partida.mensajeChat(jugador, mensajeChat);
+		mensaje.put("idPartida", idPartida);
+		mensaje.put("jugador", jugador);
+		partida.broadcast(mensaje);
+		
+		return mensaje;
+	}
 
 	private void terminar(Partida partida) {
 		partida.terminar();

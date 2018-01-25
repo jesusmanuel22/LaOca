@@ -59,6 +59,16 @@ public class WSPartidas {
 			} catch (Exception e) {
 			}
 		}
+		if(jso.getString("tipo").equals("mensajeChat")) {
+			int idPartida=jso.getInt("idPartida");
+			String jugador=jso.getString("nombreJugador");
+			String mensajeChat=jso.getString("mensajeUsuario");
+			try {
+				JSONObject mensaje=Manager.get().mensajeChat( idPartida,jugador, mensajeChat);
+				
+			} catch (Exception e) {
+			}
+		}
 	}
 
 	private void broadcast(String mensaje) {

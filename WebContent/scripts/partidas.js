@@ -128,7 +128,13 @@ function conectarWebSocket() {
 
 			
 		}
-
+		if (mensaje.tipo=="mensajeChat"){
+			var mensajeChat=document.getElementById("chat");
+			var jugador=mensaje.nombreJugador;
+			var mensajeMostrar=mensaje.mensajeChat;
+			mensajeChat.value+="CHAT: "+jugador+": "+mensajeMostrar+".\n\n";
+			document.getElementById("txtChat").value="";
+		}
 		
 	}
 	ws.onclose=function(){
@@ -169,7 +175,14 @@ function sleep(milliseconds) {
 }
 
 
-
-
-
-
+function enviarMensaje(){
+	if(document.getElementById("txtChat").value!=""){
+	var p = {
+		tipo : "mensajeChat",
+		idPartida : idPartida,
+		nombreJugador: document.getElementById("nombre").innerHTML,
+		mensajeUsuario : document.getElementById("txtChat").value
+		};
+		ws.send(JSON.stringify(p));
+	}
+}

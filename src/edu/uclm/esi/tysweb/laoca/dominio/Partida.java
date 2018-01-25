@@ -63,7 +63,14 @@ public class Partida {
 			return null;
 		return this.jugadores.get(this.jugadorConElTurno);
 	}
-
+	public JSONObject mensajeChat(String nombreJugador, String mensajeChat) throws Exception {
+		JSONObject result=new JSONObject();
+		result.put("tipo","mensajeChat");
+		result.put("nombreJugador",nombreJugador);
+		result.put("mensajeChat", mensajeChat);
+		
+		return result;
+	}
 	public JSONObject tirarDado(String nombreJugador, int dado) throws Exception {
 		JSONObject result=new JSONObject();
 		Usuario jugador=findJugador(nombreJugador);
