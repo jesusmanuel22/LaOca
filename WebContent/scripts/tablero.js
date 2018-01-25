@@ -12,6 +12,18 @@ Tablero.prototype.moverFicha = function(nombreuser, casilladestino){
 	  var x = casillaDest.childNodes[0].getAttribute("x");
 	  var y = casillaDest.childNodes[0].getAttribute("y");
 	  
+	
+	  
+	  //if(ficha.id == this.fichas[0].id){
+		//  ficha.setAttribute("cx",((this.casillas[casilladestino].x0)+15));    
+		  //ficha.setAttribute("cy",((this.casillas[casilladestino].y0)+15));
+	  //}
+	  
+	  //if(ficha.id == this.fichas[0].id){
+		//  ficha.setAttribute("cx",((this.casillas[casilladestino].x0)+15));    
+		 // ficha.setAttribute("cy",((this.casillas[casilladestino].y0)+15));
+	  //}
+	  
 	  if(ficha.getAttribute("fill") == "red"){
 	    ficha.setAttribute("cx",((this.casillas[casilladestino].x0)+15));    
 	    ficha.setAttribute("cy",((this.casillas[casilladestino].y0)+15));
@@ -37,7 +49,9 @@ Tablero.prototype.mensaje = function(){
 	console.log("hola")
 }
 Tablero.prototype.pintarFichas = function(listajugadores){
-	this.crearFichas(listajugadores);
+	this.crearFichas(listajugadores);	  
+	//alert(this.fichas[0].id);	  
+	//alert(this.fichas[1].id);
 	for (var i=0;i<this.fichas.length;i++){
 		this.fichas[i].dibujar(this.lienzo);
 	}

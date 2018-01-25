@@ -203,6 +203,7 @@ iframe {
 
 .login100-pic img {
   max-width: 100%;
+  border-radius:10px;
 }
 
 
@@ -542,4 +543,12 @@ margin-top: 10px;
 ul, li {
     list-style-type: disc;
     margin-left: 15px;
+}
+  #contenedor_tablero {
+    margin-bottom: 15px;
+  }
+@media (max-width: 700px) {
+  #contenedor_tablero {
+    overflow:scroll;
+  }
 }

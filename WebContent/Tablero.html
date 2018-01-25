@@ -1,43 +1,113 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>La 0ca</title>
+    <title>Tablero</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--===============================================================================================-->
+    <link rel="icon" type="image/png" href="images/icons/favicon.ico"/>
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="vendor/css-hamburgers/hamburgers.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="css/util.css">
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <!--===============================================================================================-->
 </head>
-<body style="background-color:#66FFFF;">
+<body>
+<div class="container-login100">
+    <div class="wrap-login100 w1260">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="contenedor">
+                    <input type="number" min="2" max="4" placeholder="Nº Jugadores" id="njugadores" style="margin-bottom: 10px;">
+                    <button onclick="crearPartida()" class="btn btn-primary">Crear Partida</button>
+                </div>
+                <div class="contenedor">
+                    <button onclick="unirse()" class="btn btn-primary">Unirse a una Partida</button>
+                </div>
+                <span id="nombre"></span>
+                <div class="contenedor">
+                    <span><h5>Jugadores de la Sala</h5></span>
+                    <ul style="padding-top: 10px;">
+                        <li>Raul</li>
+                        <li>Raul</li>
+                        <li>Raul</li>
+                        <li>Raul</li>
+                    </ul>
+                </div>
+                <div class="contenedor">
+                    <div><h5>Estado del juego</h5></div>
+                    <div id="estado">Esperando jugadores...</div>
+                </div>
+            </div>
+            <div class="col-md-6" id="contenedor_tablero">
+                    <svg id="tablero" width="554" height="554" style="padding-top: 3px;padding-left: 3px;"></svg>
 
-	<!--  Nombre: <input type="text" id="nombre"><br>
-	Número de jugadores: <input type="number" id="numero"><br>
-	<button onclick="crearPartida()">Crear</button>
-	<br>
-	<button onclick="unirse()">Unirse</button>
-	-->
-	 passvieja: <input type="text" id="pwd1">
-	  pass1nueva: <input type="text" id="pwd1New">
-	   pass2nueva: <input type="text" id="pwd2New">
-	 Nombre: <input type="text" id="nombre">
-	<div style="text-align:center;">
-		<svg id="tablero" width="550" height="550" stroke="black" stroke-width="3" style="background-color:#66FFFF"></svg>
-	</div>
-	<script>
+                
+            </div>
+            <div class="col-md-3">
+                <div class="contenedor">
+                    <button class="btn btn-success" onclick="lanzarDado()">
+                        <img src="images/dado.png" style="width: 15%;">
+                        <span style="color:black;">Lanzar</span>
+                    </button>
+                </div>
+                <div class="contenedor">
+                    <span>Chat de la Sala</span>
+                    <textarea readonly>
+
+                    </textarea>
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Decir algo...">
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary" type="submit" onclick="enviarMensaje()">
+                                <i class="fa fa-paper-plane"></i>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<!--===============================================================================================-->
+<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+<!--===============================================================================================-->
+<script src="vendor/bootstrap/js/popper.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+<!--===============================================================================================-->
+<script src="vendor/select2/select2.min.js"></script>
+<!--===============================================================================================-->
+<script src="vendor/tilt/tilt.jquery.min.js"></script>
+<!--===============================================================================================-->
+<script src="js/main.js"></script>
+<script src="scripts/partidas.js"></script>
+<script src="scripts/tablero.js"></script>
+<script src="scripts/GestionCuentas.js"></script>
+<script>
 	if (sessionStorage.getItem('email')!=null)
-		document.getElementById("nombre").value=sessionStorage.getItem('email');	
+		document.getElementById("nombre").innerHTML=sessionStorage.getItem('email');	
 	</script>
-	<button type="button" onclick="lanzarDado()"> Lanzar Dado </button>
-	N_jugadores: <input type="text" id="njugadores">
-	<button type="button" onclick="crearPartida()"> Crear Partida </button>
-	<button type="button" onclick="unirse()">Unirse </button>
-	<!-- Creamos cookie en login y lees de la cookie no pasas xD -->
-
-	<script src="scripts/partidas.js"></script>
-	<script src="scripts/tablero.js"></script>
-	<script src="scripts/GestionCuentas.js"></script>
-	
-	<script>
+<script>
 	var jugadores = [];
 	var lienzo=document.getElementById("tablero");
 	var tablero=new Tablero(lienzo);
 	tablero.dibujar();
-	</script>
+</script>
+
+
 </body>
 </html>

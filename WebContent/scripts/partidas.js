@@ -20,7 +20,7 @@ function crearPartida() {
 		}
 	};
 	var p = {
-		nombre : document.getElementById("nombre").value,
+		nombre : document.getElementById("nombre").innerHTML,
 		numeroDeJugadores : document.getElementById("njugadores").value
 	};
 	request.send("p=" + JSON.stringify(p));
@@ -40,7 +40,7 @@ function unirse() {
 		}
 	};
 	var p = {
-		nombre : document.getElementById("nombre").value
+		nombre : document.getElementById("nombre").innerHTML
 	};
 	request.send("p=" + JSON.stringify(p));
 }
@@ -81,20 +81,32 @@ function conectarWebSocket() {
 
 			var casillaOrigen=mensaje.casillaOrigen;
 			var numeroDelDado=mensaje.dado;
-			//var destinoInicial=mensaje.ca;
-			var destinoFinal=mensaje.destinoInicial;
+			var destinoFinal=mensaje.destinoFinal;
 			var mensaje1=mensaje.mensaje;
-			
-			if(mensaje.jugadorConElTurno!=null){
-				//habilitar botón de tirar
+			var jugadorQueMueve=mensaje.jugador;
+			if(mensaje.jugadorConElTurno!=jugadorQueMueve){
+				//deshabilitar botón de tirar
+				
 				
 				jugadorTurno=mensaje.jugadorConElTurno;
 			}
 			if(mensaje.ganador!=null){
 				var ganador=mensaje.ganador;
 			}
+			console.log("Destino inicial: "+mensaje.destinoInicial+" DestinoFinal: "+destinoFinal);
+			if(destinoFinal!=null){
+				tablero.moverFicha(jugadorQueMueve, mensaje.destinoInicial);
+				setTimeout(tablero.moverFicha(jugadorQueMueve, mensaje.destinoFinal),5000);
+				
+			}else{
+				destinoFinal=mensaje.destinoInicial;
+				tablero.moverFicha(jugadorQueMueve, destinoFinal);
+			}
+				
+			
+			
 
-			tablero.moverFicha(jugadorTurno, destinoFinal);
+			
 		}
 
 		
@@ -115,26 +127,26 @@ function addMensaje(texto) {
 function lanzarDado(){
 	var p = {
 	        tipo: "dadoselanza",	
-	        nombreJugador: document.getElementById("nombre").value,
-	        puntos: getRandomArbitrary(1, 6),
+	        nombreJugador: document.getElementById("nombre").innerHTML,
+	        puntos: getRandomInt(1, 6),
 	        idPartida: idPartida
 	    };
 
 	   ws.send(JSON.stringify(p));
 }
-function getRandomArbitrary(min, max) {
-	  return Math.random() * (max - min) + min;
-	}
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 
 
-/*function sleep(milliseconds) {
+function sleep(milliseconds) {
     var start = new Date().getTime();
     for (var i = 0; i < 1e7; i++) {
         if ((new Date().getTime() - start) > milliseconds) {
             break;
         }
     }
-}*/
+}
 
 
 
