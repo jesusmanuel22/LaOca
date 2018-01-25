@@ -96,6 +96,7 @@ public class Partida {
 				this.ganador=this.jugadores.get(0);
 				result.put("ganador", this.ganador.getLogin());
 			}
+			jugador.enviar(result);
 		}
 		if (destino.getPos()==62) { // Llegada
 			this.ganador=jugador;
