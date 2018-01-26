@@ -27,6 +27,7 @@ public class Usuario {
 	public String getLogin() {
 		return this.login;
 	}
+	
 
 	public void setPartida(Partida partida) {
 		this.partida=partida;

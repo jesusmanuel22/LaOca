@@ -112,7 +112,11 @@ function conectarWebSocket() {
 			mensajeChat.value+="El usuario "+jugadorQueMueve+" ha sacado: "+numeroDelDado+".\n\n";
 			if(destinoFinal!=null){
 				tablero.moverFicha(jugadorQueMueve, mensaje.destinoInicial);
-				setTimeout(tablero.moverFicha(jugadorQueMueve, mensaje.destinoFinal),5000);
+				setTimeout(
+						function(){
+							tablero.moverFicha(jugadorQueMueve, mensaje.destinoFinal);
+						}, 1000);
+						
 				
 			}else{
 				destinoFinal=mensaje.destinoInicial;

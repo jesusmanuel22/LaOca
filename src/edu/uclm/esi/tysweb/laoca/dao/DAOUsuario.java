@@ -3,6 +3,7 @@ package edu.uclm.esi.tysweb.laoca.dao;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Random;
 
 import org.bson.BsonArray;
 import org.bson.BsonDocument;
@@ -18,6 +19,7 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.UpdateOneModel;
 
+import edu.uclm.esi.tysweb.laoca.dominio.EMailSenderService;
 import edu.uclm.esi.tysweb.laoca.dominio.Usuario;
 import edu.uclm.esi.tysweb.laoca.dominio.UsuarioRegistrado;
 import edu.uclm.esi.tysweb.laoca.mongodb.MongoBroker;
@@ -115,7 +117,6 @@ public class DAOUsuario {
 				usuario=new UsuarioRegistrado();
 				usuario.setNombre(email);
 			} else {
-				//throw new Exception("Ha fallado algo en el login");
 				if (resultadoEmail.first()!=null) {
 					throw new Exception("Este correo ya está registrado");
 				}else {
@@ -153,8 +154,44 @@ public class DAOUsuario {
 		System.out.println("He llegado a cambiar Contrasena");
 		
 	}
+	
+	public static void recuperarPWD(String email) throws Exception{
+		// TODO Auto-generated method stub
+		System.out.println(email);
+		if(existe(email)) {
+			System.out.println("EXISTE EL USUARIO");
+			EMailSenderService emailrecu=new EMailSenderService();
+			long codigo= new Random().nextLong();
+			emailrecu.enviarPorGmail(email, codigo);
+			
+			insertRecuperacion(email, codigo);
+		}else {
+			throw new Exception("No es posible recuperar la contraseña para este correo.");
+		}
+		
+		
+		
+	}
+	public static void insertRecuperacion(String email, long token) throws Exception {
+		BsonDocument recuUsuario=new BsonDocument();
+		recuUsuario.append("email", new BsonString(email));
+		recuUsuario.put("token", new BsonInt32((int) token));
+		
+		
+	
+		MongoClient conexion=MongoBroker.get().getConexionPrivilegiada();
+		MongoCollection<BsonDocument> usuarios = 
+				conexion.getDatabase("LaOca2017").getCollection("recuperacionContrasena", BsonDocument.class);
+
+		try {
+			usuarios.insertOne(recuUsuario);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		conexion.close();
 
 }
+	}
 
 
 

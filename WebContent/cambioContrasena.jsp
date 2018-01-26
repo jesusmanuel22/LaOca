@@ -4,25 +4,28 @@
     pageEncoding="UTF-8"%>
 
 <%
-	String p=request.getParameter("p");
-	JSONObject jso=new JSONObject(p);
-	
 	JSONObject respuesta=new JSONObject();
-	try {
-		String email=jso.optString("email");
-		String pwd1=jso.optString("pwd1");
-		String pwd1New=jso.optString("pwd1New");
-		String pwd2New=jso.optString("pwd2New");
+	if(session.getAttribute("usuario")!=null){
+		String p=request.getParameter("p");
+		JSONObject jso=new JSONObject(p);
 		
-		comprobarCredenciales(email, pwd1New, pwd2New);
-		
-		Manager.get().cambiarContrasena(email, pwd1,pwd1New);
-		respuesta.put("result", "OK");
-	}
-	catch (Exception e) {
-		respuesta.put("result", "ERROR");
-		respuesta.put("mensaje", e.getMessage());
-	}
+	
+		try {
+			String email=jso.optString("email");
+			String pwd1=jso.optString("pwd1");
+			String pwd1New=jso.optString("pwd1New");
+			String pwd2New=jso.optString("pwd2New");
+			
+			comprobarCredenciales(email, pwd1New, pwd2New);
+			
+			Manager.get().cambiarContrasena(email, pwd1,pwd1New);
+			respuesta.put("result", "OK");
+		}
+		catch (Exception e) {
+			respuesta.put("result", "ERROR");
+			respuesta.put("mensaje", e.getMessage());
+		}
+	}else{response.sendRedirect("login.html");return;}
 	out.println(respuesta.toString());
 %>
 

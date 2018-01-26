@@ -80,3 +80,22 @@ function estaConectado() {
 	};
 	request.send();	
 }
+function recuperarPWD(){
+	var request = new XMLHttpRequest();	
+	request.open("post", "recuperarPWD.jsp");
+	request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	request.onreadystatechange=function() {
+		if (request.readyState==4) {
+			var respuesta=JSON.parse(request.responseText);
+			if (respuesta.result!="OK") {
+				alert("Error al intentar realizar la recuperación.");
+				
+			}
+		}
+	};
+	var p = {
+			email : txtEmail.value
+		};
+		request.send("p=" + JSON.stringify(p));
+
+}

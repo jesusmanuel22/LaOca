@@ -85,6 +85,9 @@ public class Manager {
 	public Usuario login(String email, String pwd) throws Exception {
 		return UsuarioRegistrado.login(email, pwd);
 	}
+	public void recuperarPWD(String email) throws Exception{
+		 DAOUsuario.recuperarPWD(email);
+	}
 	public boolean existe(String nombreJugador) throws Exception {
 		return DAOUsuario.existe(nombreJugador);
 	}
