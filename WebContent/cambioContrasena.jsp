@@ -25,7 +25,7 @@
 			respuesta.put("result", "ERROR");
 			respuesta.put("mensaje", e.getMessage());
 		}
-	}else{response.sendRedirect("login.html");return;}
+	}else{response.sendRedirect("index.html");return;}
 	out.println(respuesta.toString());
 %>
 

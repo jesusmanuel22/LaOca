@@ -106,6 +106,13 @@ function conectarWebSocket() {
 			}
 			if(mensaje.ganador!=null){
 				var ganador=mensaje.ganador;
+				mensajeChat.value+="El ganador es: "+ganador+"\n\n";
+
+			}
+			if(mensajeAdicional!=null){
+				var mensaDi=mensaje.mensajeAdicional;
+				mensajeChat.value+=mensaDi+"\n\n";
+
 			}
 			console.log("Destino inicial: "+mensaje.destinoInicial+" DestinoFinal: "+destinoFinal);
 			var mensajeChat=document.getElementById("chat");

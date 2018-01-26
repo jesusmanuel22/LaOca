@@ -81,7 +81,9 @@ public class Manager {
 	public void cambiarContrasena(String email,String pwdvieja, String pwd1) throws Exception {
 		UsuarioRegistrado.cambiarContrasena(email,pwdvieja, pwd1);
 	}
-	
+	public void nuevaContrasena(String pwd1New, long token) throws Exception {
+		UsuarioRegistrado.nuevaContrasena(pwd1New, token);
+	}
 	public Usuario login(String email, String pwd) throws Exception {
 		return UsuarioRegistrado.login(email, pwd);
 	}

@@ -38,7 +38,7 @@ public class EMailSenderService {
 
         MimeMessage msg = new MimeMessage(session);
         msg.setSubject("LaOca - recuperación de contraseña");
-        msg.setText("Pulsa en el siguiente enlace para crear una nueva contraseña: http://...../crearpwd.jsp?code=" + codigo);
+        msg.setText("Pulsa en el siguiente enlace para crear una nueva contraseña: http://127.0.0.1:8080/LaOca2017/nuevaPWD.html?code=" + codigo);
         msg.setFrom(new InternetAddress(this.remitente));
         msg.addRecipient(Message.RecipientType.TO, new InternetAddress(destinatario));
         Transport.send(msg);

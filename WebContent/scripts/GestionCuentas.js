@@ -7,7 +7,7 @@ function registrar() {
 			var respuesta=JSON.parse(request.responseText);
 			if (respuesta.result=="OK"){
 				sessionStorage.setItem('email', email.value);
-				window.location.href="Tablero.html";
+				window.location.href="index.html";
 			}else
 				mensajeRegistro.innerHTML=respuesta.mensaje;
 		}
@@ -98,4 +98,24 @@ function recuperarPWD(){
 		};
 		request.send("p=" + JSON.stringify(p));
 
+}
+function nuevaPWD(){
+	var request = new XMLHttpRequest();	
+	request.open("post", "nuevaPWD.jsp");
+	request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	var token=window.location.href;
+	token=token.split("=");
+	request.onreadystatechange=function() {
+		if (request.readyState==4) {
+			var respuesta=JSON.parse(request.responseText);
+			if (respuesta.result=="OK"){
+				window.location.href="index.html";
+			}else
+				console.log(respuesta.mensaje);
+		}
+	};				
+	var p = {
+		 pwd1New: pwd1New.value, pwd2New : pwd2New.value , token : token[1]
+	};
+	request.send("p=" + JSON.stringify(p));	
 }

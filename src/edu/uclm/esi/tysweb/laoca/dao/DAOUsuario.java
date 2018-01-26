@@ -3,11 +3,13 @@ package edu.uclm.esi.tysweb.laoca.dao;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Date;
 import java.util.Random;
 
 import org.bson.BsonArray;
 import org.bson.BsonDocument;
 import org.bson.BsonInt32;
+import org.bson.BsonInt64;
 import org.bson.BsonString;
 import org.bson.BsonValue;
 import org.bson.conversions.Bson;
@@ -37,6 +39,7 @@ public class DAOUsuario {
 		BsonDocument usuario=usuarios.find(criterio).first();
 		return usuario!=null;
 	}
+	
 	
 	public static void insert(Usuario usuario, String pwd) throws Exception {
 		BsonDocument bUsuario=new BsonDocument();
@@ -84,7 +87,7 @@ public class DAOUsuario {
 
 		MongoBroker.get().getConexionPrivilegiada().getDatabase("MACARIO").runCommand(creacionDeUsuario);
 	}*/
-
+	
 	private static BsonString encriptar(String pwd) throws Exception {
 		MessageDigest md = MessageDigest.getInstance("MD5");
 		byte[] messageDigest = md.digest(pwd.getBytes());
@@ -154,7 +157,37 @@ public class DAOUsuario {
 		System.out.println("He llegado a cambiar Contrasena");
 		
 	}
-	
+	public static void nuevaContrasena( String pwd1New, long token) {
+		// TODO Auto-generated method stub
+		MongoClient conexion=MongoBroker.get().getConexionPrivilegiada();
+		BsonDocument criterioActualizacion=new BsonDocument();
+		BsonDocument criterio=new BsonDocument();
+		BsonDocument criterioBuscar=new BsonDocument();
+		criterioActualizacion.append("token", new BsonInt64(token));
+		
+		criterio.append("pwd", new BsonString(pwd1New));
+		MongoCollection<BsonDocument> recuPWD=
+				conexion.getDatabase("LaOca2017").getCollection("recuperacionContrasena", BsonDocument.class);
+		FindIterable<BsonDocument> userToken = recuPWD.find(criterioActualizacion); 
+		if(userToken.first()!=null) {
+			//printJson(userToken.first());
+			//String email=userToken.(criterioActualizacion,new BsonDocument("$get","email"));
+			String email=userToken.first().get("email").toString();
+			email=email.split("value='")[1].split("'}")[0];
+			criterioBuscar.append("email", new BsonString(email));
+			System.out.println(email);
+		MongoCollection<BsonDocument> usuarios=
+				conexion.getDatabase("LaOca2017").getCollection("usuarios", BsonDocument.class);
+		try {
+			usuarios.updateOne(criterioBuscar, new BsonDocument("$set",criterio));
+		} catch (Exception e) {
+			System.out.println("La contraseña vieja no coinciden");
+		}
+		
+		conexion.close();
+		System.out.println("He llegado a cambiar Contrasena");
+		}
+	}
 	public static void recuperarPWD(String email) throws Exception{
 		// TODO Auto-generated method stub
 		System.out.println(email);
@@ -175,8 +208,11 @@ public class DAOUsuario {
 	public static void insertRecuperacion(String email, long token) throws Exception {
 		BsonDocument recuUsuario=new BsonDocument();
 		recuUsuario.append("email", new BsonString(email));
-		recuUsuario.put("token", new BsonInt32((int) token));
-		
+		recuUsuario.put("token", new BsonInt64( token));
+		Date caducidad=new Date();
+		int caducidadBD=caducidad.getHours()+1;
+		caducidad.setHours(caducidadBD);
+		recuUsuario.put("caducidad", new BsonString(caducidad.toString()));
 		
 	
 		MongoClient conexion=MongoBroker.get().getConexionPrivilegiada();

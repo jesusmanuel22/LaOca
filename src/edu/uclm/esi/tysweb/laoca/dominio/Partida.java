@@ -2,7 +2,6 @@ package edu.uclm.esi.tysweb.laoca.dominio;
 
 import java.util.Random;
 import java.util.Vector;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -74,6 +73,10 @@ public class Partida {
 	public JSONObject tirarDado(String nombreJugador, int dado) throws Exception {
 		JSONObject result=new JSONObject();
 		Usuario jugador=findJugador(nombreJugador);
+			Usuario jugadorRegistrado=new UsuarioRegistrado();
+			jugadorRegistrado.setNombre(jugador.getLogin());
+			//jugadorRegistrado.actualizarVictorias();
+
 		if (jugador!=getJugadorConElTurno())
 			throw new Exception("No tienes el turno");
 		result.put("tipo", "TIRADA");

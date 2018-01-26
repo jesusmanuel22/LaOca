@@ -13,6 +13,10 @@ public class UsuarioRegistrado extends Usuario {
 		this.partidasGanadas=0;
 		this.partidasPerdidas=0;
 	}
+	/*public static void actualizarVictorias(String email throws Exception {
+		this.
+		 DAOUsuario.actualizarVictorias(email);
+	}*/
 
 	public static Usuario login(String email, String pwd) throws Exception {
 		return DAOUsuario.login(email, pwd);
@@ -20,6 +24,9 @@ public class UsuarioRegistrado extends Usuario {
 
 	public static void cambiarContrasena(String email,String pwdvieja, String pwd1) {
 		DAOUsuario.cambiarContrasena(email, pwdvieja,pwd1);
+	}
+	public static void nuevaContrasena(String pwd1New, long token) {
+		DAOUsuario.nuevaContrasena(pwd1New, token);
 	}
 	public static void recuperarPWD(String email)throws Exception {
 		DAOUsuario.recuperarPWD(email);
