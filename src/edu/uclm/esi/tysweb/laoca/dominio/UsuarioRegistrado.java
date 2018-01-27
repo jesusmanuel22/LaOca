@@ -11,12 +11,11 @@ public class UsuarioRegistrado extends Usuario {
 	public UsuarioRegistrado() {
 		super();
 		this.partidasGanadas=0;
-		this.partidasPerdidas=0;
 	}
-	/*public static void actualizarVictorias(String email throws Exception {
-		this.
-		 DAOUsuario.actualizarVictorias(email);
-	}*/
+	public void actualizarVictorias() throws Exception {
+		this.partidasGanadas++;
+		DAOUsuario.actualizarVictorias(super.login);
+	}
 
 	public static Usuario login(String email, String pwd) throws Exception {
 		return DAOUsuario.login(email, pwd);
@@ -30,5 +29,9 @@ public class UsuarioRegistrado extends Usuario {
 	}
 	public static void recuperarPWD(String email)throws Exception {
 		DAOUsuario.recuperarPWD(email);
+	}
+	public static String ranking() {
+		// TODO Auto-generated method stub
+		return DAOUsuario.ranking();
 	}
 }

@@ -87,6 +87,9 @@ public class Manager {
 	public Usuario login(String email, String pwd) throws Exception {
 		return UsuarioRegistrado.login(email, pwd);
 	}
+	public String ranking() throws Exception {
+		 return UsuarioRegistrado.ranking();
+	}
 	public void recuperarPWD(String email) throws Exception{
 		 DAOUsuario.recuperarPWD(email);
 	}

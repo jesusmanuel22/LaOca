@@ -57,6 +57,7 @@ public class WSPartidas {
 				JSONObject mensaje=Manager.get().tirarDado( idPartida,jugador, dado);
 				
 			} catch (Exception e) {
+				System.out.println("Errorrrrrrrrrrrrrrrr"+e.getMessage());
 			}
 		}
 		if(jso.getString("tipo").equals("mensajeChat")) {

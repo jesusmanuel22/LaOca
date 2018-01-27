@@ -6,18 +6,22 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.Random;
 
+import javax.print.Doc;
+
 import org.bson.BsonArray;
 import org.bson.BsonDocument;
 import org.bson.BsonInt32;
 import org.bson.BsonInt64;
 import org.bson.BsonString;
 import org.bson.BsonValue;
+import org.bson.Document;
 import org.bson.conversions.Bson;
 
 import com.mongodb.MongoClient;
 import com.mongodb.MongoWriteException;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.UpdateOneModel;
 
@@ -45,8 +49,7 @@ public class DAOUsuario {
 		BsonDocument bUsuario=new BsonDocument();
 		bUsuario.append("email", new BsonString(usuario.getLogin()));
 		bUsuario.put("pwd", new BsonString(pwd));
-		bUsuario.put("Puntuacion", new BsonInt32(0));
-		
+		bUsuario.put("victorias", new BsonInt32(0));
 	
 		MongoClient conexion=MongoBroker.get().getConexionPrivilegiada();
 		MongoCollection<BsonDocument> usuarios = 
@@ -154,7 +157,6 @@ public class DAOUsuario {
 		}
 		
 		conexion.close();
-		System.out.println("He llegado a cambiar Contrasena");
 		
 	}
 	public static void nuevaContrasena( String pwd1New, long token) {
@@ -175,7 +177,6 @@ public class DAOUsuario {
 			String email=userToken.first().get("email").toString();
 			email=email.split("value='")[1].split("'}")[0];
 			criterioBuscar.append("email", new BsonString(email));
-			System.out.println(email);
 		MongoCollection<BsonDocument> usuarios=
 				conexion.getDatabase("LaOca2017").getCollection("usuarios", BsonDocument.class);
 		try {
@@ -227,12 +228,51 @@ public class DAOUsuario {
 		conexion.close();
 
 }
+
+
+	public static void actualizarVictorias(String email) throws Exception {
+		if(existe(email)) {
+			MongoClient conexion=MongoBroker.get().getConexionPrivilegiada();
+			
+			BsonDocument criterioActualizacion=new BsonDocument();
+			BsonDocument criterio=new BsonDocument();
+			BsonDocument criterioBuscarVictorias=new BsonDocument();
+			criterioBuscarVictorias.append("email", new BsonString(email));
+			criterioActualizacion.append("email", new BsonString(email));
+			MongoCollection<BsonDocument> usuarios=
+					conexion.getDatabase("LaOca2017").getCollection("usuarios", BsonDocument.class);
+			int vic=0;
+			FindIterable<BsonDocument> buscarVic= usuarios.find(criterioBuscarVictorias);
+			if(buscarVic!=null) {
+				String victorias=buscarVic.first().get("victorias").toString();
+				victorias=victorias.split("=")[1].split("}")[0];
+				System.out.println(victorias);
+				vic=Integer.parseInt(victorias);
+				
+
+			}
+
+			criterio.append("victorias", new BsonInt32(vic+1));
+			usuarios.updateOne(criterioActualizacion, new BsonDocument("$set",criterio));
+			conexion.close();
+			
+		}
+		
 	}
 
 
-
-
-
-
-
-
+	public static String ranking() {
+		// TODO Auto-generated method stub
+		MongoClient conexion=MongoBroker.get().getConexionPrivilegiada();
+		MongoCollection<BsonDocument> usuarios=
+				conexion.getDatabase("LaOca2017").getCollection("usuarios", BsonDocument.class);
+		String ranking="";
+		try (MongoCursor <BsonDocument> cursor = usuarios.find().iterator()) {
+		    while (cursor.hasNext()) {
+		    	ranking=ranking+"{'email2'"+cursor.next().toJson();
+		        System.out.println(ranking);
+		    }
+		}
+		return ranking;
+	}
+	}

@@ -5,7 +5,7 @@
 
 <%
 session.removeAttribute("usuario");
-response.sendRedirect("login.html");
+response.sendRedirect("index.html");
 %>
 
 

@@ -119,3 +119,19 @@ function nuevaPWD(){
 	};
 	request.send("p=" + JSON.stringify(p));	
 }
+function ranking2(){
+	var request = new XMLHttpRequest();	
+	request.open("post", "ranking.jsp");
+	request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	
+	request.onreadystatechange=function() {
+		if (request.readyState==4) {
+			var respuesta=JSON.parse(request.responseText);
+			console.log(respuesta.email);
+		}
+	};				
+	var p = {
+		 email: sessionStorage.getItem('email')
+	};
+	request.send("p=" + JSON.stringify(p));	
+}

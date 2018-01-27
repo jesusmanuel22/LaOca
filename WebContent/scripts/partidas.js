@@ -86,8 +86,9 @@ function conectarWebSocket() {
             mensajeChat.value+="Es el turno del usuario: "+ jugadorTurno+".\n\n";
 		}
 		if(mensaje.tipo=="TIRADA"){
+			var mensajeChat=document.getElementById("chat");
 
-
+			var mensajeAdicional=mensaje.mensajeAdicional;
 			var casillaOrigen=mensaje.casillaOrigen;
 			var numeroDelDado=mensaje.dado;
 			var destinoFinal=mensaje.destinoFinal;
@@ -104,19 +105,15 @@ function conectarWebSocket() {
 				var botonEnviar = document.getElementById("lanzarDado");
 				botonEnviar.disabled=false;
 			}
-			if(mensaje.ganador!=null){
-				var ganador=mensaje.ganador;
-				mensajeChat.value+="El ganador es: "+ganador+"\n\n";
-
+			if(numeroDelDado!=null){
+				mensajeChat.value+="El usuario "+jugadorQueMueve+" ha sacado: "+numeroDelDado+".\n\n";
 			}
 			if(mensajeAdicional!=null){
-				var mensaDi=mensaje.mensajeAdicional;
-				mensajeChat.value+=mensaDi+"\n\n";
+				mensajeChat.value+=mensajeAdicional+"\n\n";
 
 			}
 			console.log("Destino inicial: "+mensaje.destinoInicial+" DestinoFinal: "+destinoFinal);
-			var mensajeChat=document.getElementById("chat");
-			mensajeChat.value+="El usuario "+jugadorQueMueve+" ha sacado: "+numeroDelDado+".\n\n";
+			
 			if(destinoFinal!=null){
 				tablero.moverFicha(jugadorQueMueve, mensaje.destinoInicial);
 				setTimeout(
@@ -133,9 +130,14 @@ function conectarWebSocket() {
 				mensajeChat.value+=mensaje.mensaje+"\n\n";
 			}
 			
-			mensajeChat.value+="Es el turno del usuario: "+ jugadorTurno+".\n\n";
+			if(jugadorTurno!=null){
+				mensajeChat.value+="Es el turno del usuario: "+ jugadorTurno+".\n\n";
+			}
 			
-			
+			if(mensaje.ganador!=null){
+				mensajeChat.value+="El ganador es: "+mensaje.ganador+"\n\n";
+
+			}
 
 			
 		}

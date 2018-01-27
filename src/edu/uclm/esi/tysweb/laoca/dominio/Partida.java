@@ -73,9 +73,9 @@ public class Partida {
 	public JSONObject tirarDado(String nombreJugador, int dado) throws Exception {
 		JSONObject result=new JSONObject();
 		Usuario jugador=findJugador(nombreJugador);
-			Usuario jugadorRegistrado=new UsuarioRegistrado();
-			jugadorRegistrado.setNombre(jugador.getLogin());
-			//jugadorRegistrado.actualizarVictorias();
+		Usuario jugadorRegistrado=new UsuarioRegistrado();
+		
+		
 
 		if (jugador!=getJugadorConElTurno())
 			throw new Exception("No tienes el turno");
@@ -95,6 +95,8 @@ public class Partida {
 			if (siguiente.getPos()==62) { // Llegada
 				this.ganador=jugador;
 				result.put("ganador", this.ganador.getLogin());
+				jugadorRegistrado.setNombre(this.ganador.getLogin());
+				((UsuarioRegistrado) jugadorRegistrado).actualizarVictorias();
 			}
 		}
 		if (destino.getPos()==57) { // Muerte
@@ -105,12 +107,18 @@ public class Partida {
 			if (this.jugadores.size()==1) {
 				this.ganador=this.jugadores.get(0);
 				result.put("ganador", this.ganador.getLogin());
+				jugadorRegistrado.setNombre(this.ganador.getLogin());
+				((UsuarioRegistrado) jugadorRegistrado).actualizarVictorias();
+
 			}
 			jugador.enviar(result);
 		}
 		if (destino.getPos()==62) { // Llegada
 			this.ganador=jugador;
 			result.put("ganador", this.ganador.getLogin());
+			jugadorRegistrado.setNombre(this.ganador.getLogin());
+			((UsuarioRegistrado) jugadorRegistrado).actualizarVictorias();
+
 		}
 		int turnosSinTirar=destino.getTurnosSinTirar();
 		if (turnosSinTirar>0) {
