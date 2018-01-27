@@ -28,19 +28,15 @@
             <div class="col-md-3">
                 <div class="contenedor">
                     <input type="number" min="2" max="4" placeholder="Nº Jugadores" id="njugadores" style="margin-bottom: 10px;">
-                    <button onclick="crearPartida()" class="btn btn-primary">Crear Partida</button>
+                    <button onclick="crearPartida()" id="btnCrear" class="btn btn-primary">Crear Partida</button>
                 </div>
                 <div class="contenedor">
-                    <button onclick="unirse()" class="btn btn-primary">Unirse a una Partida</button>
+                    <button onclick="unirse()" id="btnUnirse" class="btn btn-primary">Unirse a una Partida</button>
                 </div>
                 <span id="nombre"></span>
                 <div class="contenedor">
                     <span><h5>Jugadores de la Sala</h5></span>
-                    <ul style="padding-top: 10px;">
-                        <li>Raul</li>
-                        <li>Raul</li>
-                        <li>Raul</li>
-                        <li>Raul</li>
+                    <ul style="padding-top: 10px;" id="listaJugadores">
                     </ul>
                 </div>
                 <div class="contenedor">

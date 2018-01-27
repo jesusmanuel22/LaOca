@@ -81,9 +81,25 @@ function conectarWebSocket() {
 			idPartida=mensaje.idPartida; //meter en el areatext de partida
 			addMensaje(mensaje.jugadores); //meter en el areatext de jugadores
 			tablero.pintarFichas(mensaje.jugadores);//pintar fichar
+			
+			var listaUsuarios = document.getElementById("listaJugadores");
+			for(var i=0;i<tablero.fichas.length;i++){
+				var li = document.createElement("li");
+				var color = document.getElementById(tablero.fichas[i].id).getAttribute("fill");
+				li.style.color = color;
+				li.appendChild(document.createTextNode(tablero.fichas[i].id));
+				listaUsuarios.appendChild(li);
+			}
+			
+			var btnUnirse = document.getElementById("btnUnirse");
+			var btnCrear = document.getElementById("btnCrear");
+			btnUnirse.disabled=true;
+			btnCrear.disabled=true;
+			
             var mensajeChat=document.getElementById("chat");
             mensajeChat.value+="Comienza la partida con el número "+idPartida+".\n\n";
-            mensajeChat.value+="Es el turno del usuario: "+ jugadorTurno+".\n\n";
+            mensajeChat.value+="Es el turno del usuario: "+ jugadorTurno+".\n\n";        
+            mensajeChat.scrollTop = mensajeChat.scrollHeight;
 		}
 		if(mensaje.tipo=="TIRADA"){
 			var mensajeChat=document.getElementById("chat");
@@ -116,11 +132,13 @@ function conectarWebSocket() {
 			
 			if(destinoFinal!=null){
 				tablero.moverFicha(jugadorQueMueve, mensaje.destinoInicial);
+				lanzarDado.disabled = true; 
 				setTimeout(
 						function(){
 							tablero.moverFicha(jugadorQueMueve, mensaje.destinoFinal);
 						}, 1000);
-						
+
+				lanzarDado.disabled = false; 	
 				
 			}else{
 				destinoFinal=mensaje.destinoInicial;
@@ -128,6 +146,9 @@ function conectarWebSocket() {
 			}
 			if(mensaje.mensaje!=null){
 				mensajeChat.value+=mensaje.mensaje+"\n\n";
+				if(mensajeChat.value == jugadorQueMueve+ " cae en la muerte"){
+					document.getElementById(jugadorQueMueve).remove();
+				}
 			}
 			
 			if(jugadorTurno!=null){
@@ -136,8 +157,12 @@ function conectarWebSocket() {
 			
 			if(mensaje.ganador!=null){
 				mensajeChat.value+="El ganador es: "+mensaje.ganador+"\n\n";
+				botonEnviar.disabled=true;
 
 			}
+			
+
+			mensajeChat.scrollTop = mensajeChat.scrollHeight;
 
 			
 		}
@@ -147,6 +172,7 @@ function conectarWebSocket() {
 			var mensajeMostrar=mensaje.mensajeChat;
 			mensajeChat.value+="CHAT: "+jugador+": "+mensajeMostrar+".\n\n";
 			document.getElementById("txtChat").value="";
+			mensajeChat.scrollTop = mensajeChat.scrollHeight;
 		}
 		
 	}
