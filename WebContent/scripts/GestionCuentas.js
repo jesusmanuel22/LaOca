@@ -123,15 +123,58 @@ function ranking2(){
 	var request = new XMLHttpRequest();	
 	request.open("post", "ranking.jsp");
 	request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	var array;
 	
 	request.onreadystatechange=function() {
 		if (request.readyState==4) {
 			var respuesta=JSON.parse(request.responseText);
-			console.log(respuesta.email);
+			var numero=respuesta.numero;
+			var i=0;
+			//var ordenado=respuesta.sort(function (a,b));
+		
+			//console.log(respuesta);
+			var table=document.getElementById("ranking").getElementsByTagName('tbody')[0];
+			for(var i in respuesta) {
+				
+			    var obj = respuesta[i];
+			    var re=JSON.parse(obj);
+
+			    var row= table.insertRow(table.rows.lenght);
+				var celda1= row.insertCell(0);
+				var newText=document.createTextNode(re.email);
+				celda1.appendChild(newText);
+				var celda2=row.insertCell(1);
+				var newText2=document.createTextNode(re.victorias);
+				celda2.appendChild(newText2);
+				}
+			sortTable("ranking",1);
+			
+		
 		}
 	};				
 	var p = {
 		 email: sessionStorage.getItem('email')
 	};
 	request.send("p=" + JSON.stringify(p));	
+}
+function sortTable(table_id, sortColumn){
+    var tableData = document.getElementById(table_id).getElementsByTagName('tbody').item(0);
+    var rowData = tableData.getElementsByTagName('tr');            
+    for(var i = 0; i < rowData.length - 1; i++){
+        for(var j = 0; j < rowData.length - (i + 1); j++){
+            if(Number(rowData.item(j).getElementsByTagName('td').item(sortColumn).innerHTML.replace(/[^0-9\.]+/g, "")) < Number(rowData.item(j+1).getElementsByTagName('td').item(sortColumn).innerHTML.replace(/[^0-9\.]+/g, ""))){
+                tableData.insertBefore(rowData.item(j+1),rowData.item(j));
+            }
+        }
+    }
+}
+
+	  
+function compareSecondColumn(a, b) {
+    if (a[1] === b[1]) {
+        return 0;
+    }
+    else {
+        return (a[1] < b[1]) ? -1 : 1;
+    }
 }

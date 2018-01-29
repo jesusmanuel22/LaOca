@@ -14,7 +14,6 @@
 		String jota=Manager.get().ranking();
 		JSONObject jsaa;
 		jsaa=new JSONObject(jota);
-		jsaa.put("result", "OK");
 		out.println(jsaa.toString());
 	}
 	catch (Exception e) {

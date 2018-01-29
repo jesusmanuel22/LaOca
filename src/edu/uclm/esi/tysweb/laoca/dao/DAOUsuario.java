@@ -5,6 +5,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.Random;
+import org.json.JSONObject;
 
 import javax.print.Doc;
 
@@ -16,6 +17,7 @@ import org.bson.BsonString;
 import org.bson.BsonValue;
 import org.bson.Document;
 import org.bson.conversions.Bson;
+import org.json.JSONObject;
 
 import com.mongodb.MongoClient;
 import com.mongodb.MongoWriteException;
@@ -254,6 +256,8 @@ public class DAOUsuario {
 
 			criterio.append("victorias", new BsonInt32(vic+1));
 			usuarios.updateOne(criterioActualizacion, new BsonDocument("$set",criterio));
+			
+			
 			conexion.close();
 			
 		}
@@ -263,16 +267,20 @@ public class DAOUsuario {
 
 	public static String ranking() {
 		// TODO Auto-generated method stub
+		JSONObject jso=new JSONObject();
+		
 		MongoClient conexion=MongoBroker.get().getConexionPrivilegiada();
 		MongoCollection<BsonDocument> usuarios=
 				conexion.getDatabase("LaOca2017").getCollection("usuarios", BsonDocument.class);
-		String ranking="";
+		int ki=0;
 		try (MongoCursor <BsonDocument> cursor = usuarios.find().iterator()) {
 		    while (cursor.hasNext()) {
-		    	ranking=ranking+"{'email2'"+cursor.next().toJson();
-		        System.out.println(ranking);
+		    	ki+=1;
+		    	jso.put("user_"+Integer.toString(ki), cursor.next().toString());
 		    }
-		}
-		return ranking;
+		}	
+		
+		System.out.println(jso);
+		return jso.toString();
 	}
 	}

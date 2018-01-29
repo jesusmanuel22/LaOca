@@ -67,6 +67,11 @@ function conectarWebSocket() {
              var mensaje=document.getElementById("chat");
              mensaje.value+="Has entrado a una partida, espera que lleguen los jugadores.\n";
              
+             var btnUnirse = document.getElementById("btnUnirse");
+ 			var btnCrear = document.getElementById("btnCrear");
+ 			btnUnirse.disabled=true;
+ 			btnCrear.disabled=true;
+             
            
 		} 
 		if(mensaje.tipo=="COMIENZO"){
@@ -90,11 +95,6 @@ function conectarWebSocket() {
 				li.appendChild(document.createTextNode(tablero.fichas[i].id));
 				listaUsuarios.appendChild(li);
 			}
-			
-			var btnUnirse = document.getElementById("btnUnirse");
-			var btnCrear = document.getElementById("btnCrear");
-			btnUnirse.disabled=true;
-			btnCrear.disabled=true;
 			
             var mensajeChat=document.getElementById("chat");
             mensajeChat.value+="Comienza la partida con el número "+idPartida+".\n\n";
@@ -131,14 +131,16 @@ function conectarWebSocket() {
 			console.log("Destino inicial: "+mensaje.destinoInicial+" DestinoFinal: "+destinoFinal);
 			
 			if(destinoFinal!=null){
-				tablero.moverFicha(jugadorQueMueve, mensaje.destinoInicial);
-				lanzarDado.disabled = true; 
+				var botonEnviar = document.getElementById("lanzarDado");
+				botonEnviar.disabled = true; 
+				tablero.moverFicha(jugadorQueMueve, mensaje.destinoInicial);				
 				setTimeout(
 						function(){
 							tablero.moverFicha(jugadorQueMueve, mensaje.destinoFinal);
+							botonEnviar.disabled = false; 
 						}, 1000);
 
-				lanzarDado.disabled = false; 	
+					
 				
 			}else{
 				destinoFinal=mensaje.destinoInicial;
