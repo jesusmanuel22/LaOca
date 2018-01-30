@@ -203,11 +203,11 @@ function lanzarDado(){
 	   ws.send(JSON.stringify(p));
 }
 
-function lanzarDado(ndado){
+function lanzarDado2(ndado){
 	var p = {
 	        tipo: "dadoselanza",	
 	        nombreJugador: document.getElementById("nombre").innerHTML,
-	        puntos: n_dado,
+	        puntos: ndado,
 	        idPartida: idPartida
 	    };
 
@@ -224,13 +224,18 @@ function cargarAvatar() {
 
 	  request.onreadystatechange = function() {
 	    if (request.readyState == 4) {
-	      var respuesta = JSON.parse(request.responseText);
-	      
-	     
-	      var imagen = document.getElementById("avatar");
-	      
+	    	try{
+	    		var respuesta = JSON.parse(request.responseText);
+	  	      
+	   	     
+	  	      var imagen = document.getElementById("avatar");
+	  	      
 
-	        imagen.src = "images/"+respuesta.avatar+".png";
+	  	        imagen.src = "images/"+respuesta.avatar+".png";
+	    	}catch(e){
+	    		
+	    	}
+	      
 	      
 	    }
 	  };

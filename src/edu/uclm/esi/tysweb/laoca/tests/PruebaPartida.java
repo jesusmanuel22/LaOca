@@ -6,6 +6,7 @@ import org.junit.*;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
 import org.openqa.selenium.*;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.Select;
@@ -13,6 +14,7 @@ import org.openqa.selenium.support.ui.Select;
 import com.gargoylesoftware.htmlunit.javascript.background.JavaScriptExecutor;
 
 public class PruebaPartida {
+	
   private WebDriver driver;
   private WebDriver driver2;
   private String baseUrl;
@@ -21,24 +23,24 @@ public class PruebaPartida {
 
   @Before
   public void setUp() throws Exception {
+	  System.setProperty("webdriver.chrome.driver", "C:\\chromedriver\\chromedriver.exe");
     driver = new ChromeDriver();
     driver2 = new ChromeDriver();
     baseUrl = "https://www.katalon.com/";
     driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
-    driver2.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+   driver2.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
   }
 
   @Test
   public void testPruebaPartida() throws Exception {
 
-      JavaScriptExecutor js_A=(JavaScriptExecutor) driver;
-      JavaScriptExecutor js_B=(JavaScriptExecutor) driver2;
+     
       
 	  //Primer jugador
     driver.get("http://localhost:8080/LaOca2017/");
     driver.findElement(By.id("email")).click();
     driver.findElement(By.id("email")).clear();
-    driver.findElement(By.id("email")).sendKeys("@1");
+    driver.findElement(By.id("email")).sendKeys("@A");
     driver.findElement(By.cssSelector("button.login100-form-btn")).click();
     driver.findElement(By.id("njugadores")).clear();
     driver.findElement(By.id("njugadores")).sendKeys("2");
@@ -46,23 +48,24 @@ public class PruebaPartida {
     driver.findElement(By.id("btnCrear")).click();
     
     //Segundo jugador
-    driver.get("http://localhost:8080/LaOca2017/");
-    driver.findElement(By.id("email")).click();
-    driver.findElement(By.id("email")).clear();
-    driver.findElement(By.id("email")).sendKeys("@2");
-    driver.findElement(By.cssSelector("button.login100-form-btn")).click();
-    driver.findElement(By.id("njugadores")).clear();
-    driver.findElement(By.id("njugadores")).sendKeys("2");
-    driver.findElement(By.id("njugadores")).click();
-    driver.findElement(By.id("btnUnirse")).click();
-    
-    
+    driver2.get("http://localhost:8080/LaOca2017/");
+    driver2.findElement(By.id("email")).click();
+    driver2.findElement(By.id("email")).clear();
+    driver2.findElement(By.id("email")).sendKeys("@B");
+    driver2.findElement(By.cssSelector("button.login100-form-btn")).click();
+    driver2.findElement(By.id("njugadores")).clear();
+    driver2.findElement(By.id("btnUnirse")).click();
+    JavascriptExecutor jsA=(JavascriptExecutor)driver;
+    JavascriptExecutor jsB=(JavascriptExecutor)driver2;
+    jsA.executeScript("lanzarDado2(4);");
+    Thread.sleep(1000);
+    //jsA.executeScript("lanzarDado2(3);");
     
   }
 
   @After
   public void tearDown() throws Exception {
-    driver.quit();
+    //driver.quit();
     String verificationErrorString = verificationErrors.toString();
     if (!"".equals(verificationErrorString)) {
       fail(verificationErrorString);

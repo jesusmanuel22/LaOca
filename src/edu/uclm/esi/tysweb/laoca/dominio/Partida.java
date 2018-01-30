@@ -47,7 +47,8 @@ public class Partida {
 		jso.put("tipo", "COMIENZO");
 		jso.put("idPartida", this.id);
 		JSONArray jsa=new JSONArray();
-		this.jugadorConElTurno=(new Random()).nextInt(this.jugadores.size());
+		//this.jugadorConElTurno=(new Random()).nextInt(this.jugadores.size());
+		this.jugadorConElTurno=0;
 		jso.put("jugadorConElTurno", getJugadorConElTurno().getLogin());
 		for (Usuario jugador : jugadores) 
 			jsa.put(jugador.getLogin());
