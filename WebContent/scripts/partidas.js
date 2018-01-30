@@ -131,16 +131,16 @@ function conectarWebSocket() {
 			console.log("Destino inicial: "+mensaje.destinoInicial+" DestinoFinal: "+destinoFinal);
 			
 			if(destinoFinal!=null){
-				var botonEnviar = document.getElementById("lanzarDado");
-				botonEnviar.disabled = true; 
-				tablero.moverFicha(jugadorQueMueve, mensaje.destinoInicial);				
-				setTimeout(
-						function(){
-							tablero.moverFicha(jugadorQueMueve, mensaje.destinoFinal);
-							botonEnviar.disabled = false; 
-						}, 1000);
-
-					
+				if(sessionStorage.email==jugadorTurno){
+					var botonEnviar = document.getElementById("lanzarDado");
+					botonEnviar.disabled = true; 
+					tablero.moverFicha(jugadorQueMueve, mensaje.destinoInicial);				
+					setTimeout(
+							function(){
+								tablero.moverFicha(jugadorQueMueve, mensaje.destinoFinal);
+								botonEnviar.disabled = false; 
+							}, 1000);
+				}				
 				
 			}else{
 				destinoFinal=mensaje.destinoInicial;
