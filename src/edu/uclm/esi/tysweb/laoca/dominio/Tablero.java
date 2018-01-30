@@ -35,7 +35,7 @@ public class Tablero {
 		this.casillas[52].setSiguiente(this.casillas[25]); this.casillas[52].setMensaje(deDadoADado);
 		
 		// Posada, pozo, laberinto y cárcel
-		this.casillas[18].setTurnosSinTirar(3);
+		this.casillas[18].setTurnosSinTirar(2);
 		this.casillas[30].setTurnosSinTirar(3);
 		this.casillas[41].setTurnosSinTirar(3);
 		this.casillas[51].setTurnosSinTirar(3);

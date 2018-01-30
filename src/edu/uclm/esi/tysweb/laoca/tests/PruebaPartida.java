@@ -33,7 +33,7 @@ public class PruebaPartida {
 
   @Test
   public void testPruebaPartida() throws Exception {
-
+	  long pos;
      
       
 	  //Primer jugador
@@ -46,7 +46,7 @@ public class PruebaPartida {
     driver.findElement(By.id("njugadores")).sendKeys("2");
     driver.findElement(By.id("njugadores")).click();
     driver.findElement(By.id("btnCrear")).click();
-    
+    Thread.sleep(3000);
     //Segundo jugador
     driver2.get("http://localhost:8080/LaOca2017/");
     driver2.findElement(By.id("email")).click();
@@ -55,11 +55,72 @@ public class PruebaPartida {
     driver2.findElement(By.cssSelector("button.login100-form-btn")).click();
     driver2.findElement(By.id("njugadores")).clear();
     driver2.findElement(By.id("btnUnirse")).click();
+    Thread.sleep(3000);
+    //JavaScript a ejecutar
     JavascriptExecutor jsA=(JavascriptExecutor)driver;
     JavascriptExecutor jsB=(JavascriptExecutor)driver2;
+    
+    //Empiezan a lanzar el dado
     jsA.executeScript("lanzarDado2(4);");
-    Thread.sleep(1000);
-    //jsA.executeScript("lanzarDado2(3);");
+    Thread.sleep(3000);
+    jsA.executeScript("lanzarDado2(3);");
+    Thread.sleep(3000);
+    jsA.executeScript("lanzarDado2(3);");
+    Thread.sleep(3000);
+    jsA.executeScript("lanzarDado2(1);");
+    Thread.sleep(3000);
+    //Turno de B
+   jsB.executeScript("lanzarDado2(1);");
+    Thread.sleep(3000);
+    //Turno de A
+    jsA.executeScript("lanzarDado2(4);");
+    Thread.sleep(3000);
+    pos=(long)jsA.executeScript("return getPosFinal();");
+    assertTrue(pos==18);
+    //Turno de B
+    jsB.executeScript("lanzarDado2(4);");
+    Thread.sleep(3000);
+    jsB.executeScript("lanzarDado2(1);");
+    Thread.sleep(3000);
+    
+    jsB.executeScript("lanzarDado2(5);");
+    Thread.sleep(3000);
+    jsB.executeScript("lanzarDado2(3);");
+    Thread.sleep(3000);
+    jsB.executeScript("lanzarDado2(2);");
+    Thread.sleep(3000);
+    jsB.executeScript("lanzarDado2(1);");
+    Thread.sleep(3000);
+   //Turno de A
+    jsA.executeScript("lanzarDado2(4);");
+    Thread.sleep(3000);
+    jsA.executeScript("lanzarDado2(5);");
+    Thread.sleep(3000);
+    jsA.executeScript("lanzarDado2(5);");
+    Thread.sleep(3000);
+    jsA.executeScript("lanzarDado2(5);");
+    Thread.sleep(3000);
+    jsA.executeScript("lanzarDado2(1);");
+    Thread.sleep(3000);
+    //Turno de B
+    jsB.executeScript("lanzarDado2(6);");
+    Thread.sleep(3000);
+    //Turno de A
+    jsA.executeScript("lanzarDado2(1);");
+    Thread.sleep(3000);
+    //Turno de B
+    jsB.executeScript("lanzarDado2(2);");
+    Thread.sleep(3000);
+    pos=(long)jsB.executeScript("return getPosFinal();");
+    assertTrue(pos==61);
+    //Turno de A
+    jsA.executeScript("lanzarDado2(4);");
+    Thread.sleep(3000);
+    //Turno de B
+    jsB.executeScript("lanzarDado2(1);");
+    Thread.sleep(3000);
+    pos=(long)jsB.executeScript("return getPosFinal();");
+    assertTrue(pos==62);
     
   }
 

@@ -1,7 +1,7 @@
 var ws;
 var idPartida;
 var arr;
-
+var destinoFinal;
 function crearPartida() {
 	var request = new XMLHttpRequest();	
 	request.open("post", "crearPartida.jsp");
@@ -108,7 +108,7 @@ function conectarWebSocket() {
 			var mensajeAdicional=mensaje.mensajeAdicional;
 			var casillaOrigen=mensaje.casillaOrigen;
 			var numeroDelDado=mensaje.dado;
-			var destinoFinal=mensaje.destinoFinal;
+			destinoFinal=mensaje.destinoFinal;
 			var mensaje1=mensaje.mensaje;
 			var jugadorQueMueve=mensaje.jugador;
 			var botonEnviar = document.getElementById("lanzarDado");
@@ -265,4 +265,8 @@ function enviarMensaje(){
 		};
 		ws.send(JSON.stringify(p));
 	}
+	
+}
+function getPosFinal(){
+	return destinoFinal;
 }
