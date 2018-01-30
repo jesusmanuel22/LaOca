@@ -52,6 +52,7 @@ public class DAOUsuario {
 		bUsuario.append("email", new BsonString(usuario.getLogin()));
 		bUsuario.put("pwd", new BsonString(pwd));
 		bUsuario.put("victorias", new BsonInt32(0));
+		bUsuario.put("avatar", new BsonString("avatarm3"));
 	
 		MongoClient conexion=MongoBroker.get().getConexionPrivilegiada();
 		MongoCollection<BsonDocument> usuarios = 
@@ -283,4 +284,39 @@ public class DAOUsuario {
 		System.out.println(jso);
 		return jso.toString();
 	}
-	}
+	
+	public static void cambiarAvatar(String email, String rutaNueva) throws Exception{
+	    // TODO Auto-generated method stub
+	    MongoClient conexion=MongoBroker.get().getConexionPrivilegiada();
+	    BsonDocument criterioActualizacion=new BsonDocument();
+	    BsonDocument criterio=new BsonDocument();
+	    criterioActualizacion.append("email", new BsonString(email));
+	    criterio.append("avatar", new BsonString(rutaNueva));
+	    MongoCollection<BsonDocument> usuarios=
+	        conexion.getDatabase("LaOca2017").getCollection("usuarios", BsonDocument.class);
+	      usuarios.updateOne(criterioActualizacion, new BsonDocument("$set",criterio));
+
+	    
+	    conexion.close();
+	    
+	  }
+	public static String avatar(String email) {
+	    // TODO Auto-generated method stub
+	    JSONObject jso=new JSONObject();
+	    BsonDocument criterioEmail=new BsonDocument();
+	    criterioEmail.append("email", new BsonString(email));
+	    MongoClient conexion=MongoBroker.get().getConexionPrivilegiada();
+	    MongoCollection<BsonDocument> usuarios=
+	        conexion.getDatabase("LaOca2017").getCollection("usuarios", BsonDocument.class);
+	    String ruta="";
+	    
+	    try (MongoCursor <BsonDocument> cursor = usuarios.find(criterioEmail).iterator()) {
+	        while (cursor.hasNext()) {
+	          ruta=cursor.next().toString();
+	        }
+	    }  
+	    
+	    return ruta;
+	  }
+
+}

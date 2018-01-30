@@ -44,7 +44,7 @@
                     </button>
                 </div>
                 <div class="container-login100-form-btn">
-                    <button class="login100-form-btn left">
+                    <button class="login100-form-btn left" onclick="cambiar_foto()" id="boton_foto">
                         <i class="fa fa-picture-o m-l-5 m-r-15" aria-hidden="true"></i>
                         Cambiar foto
                     </button>
@@ -108,6 +108,26 @@
                     </button>
                 </div>
             </div>
+        	<div id="cambiar_foto" class="panel">
+                <span class="login100-form-title">
+						Modificar foto
+                </span>
+                
+                <div>
+                    <button class="perfil" id="avatarh1" onclick="seleccionar_foto('avatarh1')"><img src="images/avatarh1.png"></img></button>
+                    <button class="perfil" id="avatarh2" onclick="seleccionar_foto('avatarh2')"><img src="images/avatarh2.png"></img></button>
+                    <button class="perfil" id="avatarh3" onclick="seleccionar_foto('avatarh3')"><img src="images/avatarh3.png"></img></button>
+                </div>
+                <div>
+                    <button class="perfil" id="avatarm1" onclick="seleccionar_foto('avatarm1')"><img src="images/avatarm1.png"></img></button>
+                    <button class="perfil" id="avatarm2" onclick="seleccionar_foto('avatarm2')"><img src="images/avatarm2.png"></img></button>
+                    <button class="perfil" id="avatarm3" onclick="seleccionar_foto('avatarm3')"><img src="images/avatarm3.png"></img></button>
+                </div>
+                <div class="container-login100-form-btn">
+                    <button class="login100-form-btn" onclick="guardar_foto() ; cambiarAvatar()">
+                        Guardar
+                    </button>
+                </div>
         </div>
     </div>
 

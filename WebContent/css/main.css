@@ -187,7 +187,7 @@ iframe {
   display: -ms-flexbox;
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: space-around;
   padding: 67px 40px 33px 40px;
 }
 .w1260{
@@ -551,4 +551,14 @@ ul, li {
   #contenedor_tablero {
     overflow:scroll;
   }
+}
+/*CAMBIAR FOTO #8eff8e*/
+
+.perfil{
+ opacity: .6;
+ transition: opacity 0.3s ease-in-out;
+ border-radius: 400px;
+}
+.perfil:hover{
+ opacity: 1 !important;
 }

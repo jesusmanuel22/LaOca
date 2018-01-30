@@ -44,6 +44,28 @@ function cambiarPass() {
 	request.send("p=" + JSON.stringify(p));
 }
 
+function cambiarAvatar() {
+	  var request = new XMLHttpRequest();
+	  request.open("post", "cambioAvatar.jsp");
+	  request.setRequestHeader("Content-Type",
+	      "application/x-www-form-urlencoded");
+	  request.onreadystatechange = function() {
+	    if (request.readyState == 4) {
+	      var respuesta = JSON.parse(request.responseText);
+	      if (respuesta.result == "OK") {
+	        document.getElementById("respuestaFoto").value="La foto se ha actualizado correctamente."
+	      } else
+	        console.log(respuesta.mensaje);
+	      // mensajeRegistro.innerHTML=respuesta.mensaje;
+	    }
+	  };
+	  var p = {
+	    email : sessionStorage.getItem('email'),
+	    ruta : actual
+	  };
+	  request.send("p=" + JSON.stringify(p));
+	}
+
 function login() {
 	var request = new XMLHttpRequest();
 	request.open("post", "login.jsp");
@@ -149,6 +171,9 @@ function ranking2() {
 			// console.log(respuesta);
 			var table = document.getElementById("ranking")
 					.getElementsByTagName('tbody')[0];
+			
+			$("#ranking tbody tr").remove();
+			
 			for ( var i in respuesta) {
 
 				var obj = respuesta[i];

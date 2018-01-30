@@ -1,4 +1,5 @@
-package edu.uclm.esi.tysweb.laoca.dominio.tests;
+package edu.uclm.esi.tysweb.laoca.tests;
+
 import java.util.regex.Pattern;
 import java.util.concurrent.TimeUnit;
 import org.junit.*;
@@ -8,54 +9,55 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.Select;
-import edu.uclm.esi.tysweb.laoca.dao.*;
 
-public class UntitledTestCase {
-  private WebDriver driver, driver2;
+import com.gargoylesoftware.htmlunit.javascript.background.JavaScriptExecutor;
+
+public class PruebaPartida {
+  private WebDriver driver;
+  private WebDriver driver2;
   private String baseUrl;
   private boolean acceptNextAlert = true;
   private StringBuffer verificationErrors = new StringBuffer();
-  
+
   @Before
   public void setUp() throws Exception {
-    driver = new FirefoxDriver();
-    driver2= new ChromeDriver();
+    driver = new ChromeDriver();
+    driver2 = new ChromeDriver();
     baseUrl = "https://www.katalon.com/";
     driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
-    
+    driver2.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
   }
 
   @Test
-  public void testUntitledTestCase() throws Exception {
+  public void testPruebaPartida() throws Exception {
+
+      JavaScriptExecutor js_A=(JavaScriptExecutor) driver;
+      JavaScriptExecutor js_B=(JavaScriptExecutor) driver2;
+      
+	  //Primer jugador
     driver.get("http://localhost:8080/LaOca2017/");
-    driver.findElement(By.linkText("Crea Tu Cuenta")).click();
     driver.findElement(By.id("email")).click();
     driver.findElement(By.id("email")).clear();
-    driver.findElement(By.id("email")).sendKeys("prueba@prueba.com");
-    driver.findElement(By.id("pwd1")).clear();
-    driver.findElement(By.id("pwd1")).sendKeys("12345");
-    assertEquals("12345", driver.findElement(By.id("pwd1")).getAttribute("value"));
-    driver.findElement(By.id("pwd2")).clear();
-    driver.findElement(By.id("pwd2")).sendKeys("12345");
-    assertEquals("12345", driver.findElement(By.id("pwd2")).getAttribute("value"));
+    driver.findElement(By.id("email")).sendKeys("@1");
     driver.findElement(By.cssSelector("button.login100-form-btn")).click();
+    driver.findElement(By.id("njugadores")).clear();
+    driver.findElement(By.id("njugadores")).sendKeys("2");
+    driver.findElement(By.id("njugadores")).click();
+    driver.findElement(By.id("btnCrear")).click();
+    
+    //Segundo jugador
+    driver.get("http://localhost:8080/LaOca2017/");
     driver.findElement(By.id("email")).click();
     driver.findElement(By.id("email")).clear();
-    driver.findElement(By.id("email")).sendKeys("prueba@prueba.com");
-    assertEquals("prueba@prueba.com", driver.findElement(By.id("email")).getAttribute("value"));
-    driver.findElement(By.id("pwd1")).clear();
-    driver.findElement(By.id("pwd1")).sendKeys("12345");
-    assertEquals("12345", driver.findElement(By.id("pwd1")).getAttribute("value"));
+    driver.findElement(By.id("email")).sendKeys("@2");
     driver.findElement(By.cssSelector("button.login100-form-btn")).click();
-    driver.findElement(By.xpath("//button[@onclick=\"javascript: window.location.href='logout.jsp'\"]")).click();
-    driver.findElement(By.id("email")).click();
-    driver.findElement(By.id("email")).clear();
-    driver.findElement(By.id("email")).sendKeys("prueba@prueba.com");
-    assertEquals("prueba@prueba.com", driver.findElement(By.id("email")).getAttribute("value"));
-    driver.findElement(By.id("pwd1")).clear();
-    driver.findElement(By.id("pwd1")).sendKeys("1234");
-    assertEquals("1234", driver.findElement(By.id("pwd1")).getAttribute("value"));
-    driver.findElement(By.cssSelector("button.login100-form-btn")).click();
+    driver.findElement(By.id("njugadores")).clear();
+    driver.findElement(By.id("njugadores")).sendKeys("2");
+    driver.findElement(By.id("njugadores")).click();
+    driver.findElement(By.id("btnUnirse")).click();
+    
+    
+    
   }
 
   @After

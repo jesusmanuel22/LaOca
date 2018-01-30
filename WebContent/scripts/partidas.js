@@ -100,6 +100,7 @@ function conectarWebSocket() {
             mensajeChat.value+="Comienza la partida con el número "+idPartida+".\n\n";
             mensajeChat.value+="Es el turno del usuario: "+ jugadorTurno+".\n\n";        
             mensajeChat.scrollTop = mensajeChat.scrollHeight;
+            cargarAvatar();
 		}
 		if(mensaje.tipo=="TIRADA"){
 			var mensajeChat=document.getElementById("chat");
@@ -201,10 +202,43 @@ function lanzarDado(){
 
 	   ws.send(JSON.stringify(p));
 }
+
+function lanzarDado(ndado){
+	var p = {
+	        tipo: "dadoselanza",	
+	        nombreJugador: document.getElementById("nombre").innerHTML,
+	        puntos: n_dado,
+	        idPartida: idPartida
+	    };
+
+	   ws.send(JSON.stringify(p));
+}
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
+function cargarAvatar() {
+	  var request = new XMLHttpRequest();
+	  request.open("post", "avatar.jsp");
+	  request.setRequestHeader("Content-Type",
+	      "application/x-www-form-urlencoded");
 
+	  request.onreadystatechange = function() {
+	    if (request.readyState == 4) {
+	      var respuesta = JSON.parse(request.responseText);
+	      
+	     
+	      var imagen = document.getElementById("avatar");
+	      
+
+	        imagen.src = "images/"+respuesta.avatar+".png";
+	      
+	    }
+	  };
+	  var p = {
+	    email : sessionStorage.getItem('email')
+	  };
+	  request.send("p=" + JSON.stringify(p));
+	}
 
 function sleep(milliseconds) {
     var start = new Date().getTime();

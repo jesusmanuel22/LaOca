@@ -34,4 +34,11 @@ public class UsuarioRegistrado extends Usuario {
 		// TODO Auto-generated method stub
 		return DAOUsuario.ranking();
 	}
+	public static void cambiarAvatar(String email,String ruta) throws Exception{
+	    DAOUsuario.cambiarAvatar(email, ruta);
+	  }
+	public static String avatar(String avatar) {
+	    // TODO Auto-generated method stub
+	    return DAOUsuario.avatar(avatar);
+	  }
 }

@@ -33,7 +33,9 @@
                 <div class="contenedor">
                     <button onclick="unirse()" id="btnUnirse" class="btn btn-primary">Unirse a una Partida</button>
                 </div>
-                <span id="nombre"></span>
+                <div class="contenedor">
+                	<img src="images/avatarh1.png" style="width: 20%;" id="avatar"><span id="nombre"></span>
+                </div>
                 <div class="contenedor">
                     <span><h5>Jugadores de la Sala</h5></span>
                     <ul style="padding-top: 10px;" id="listaJugadores">
@@ -98,6 +100,7 @@
 <script>
 	if (sessionStorage.getItem('email')!=null)
 		document.getElementById("nombre").innerHTML=sessionStorage.getItem('email');	
+		cargarAvatar();
 	</script>
 <script>
 	var jugadores = [];

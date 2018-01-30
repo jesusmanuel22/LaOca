@@ -122,6 +122,12 @@ public class Manager {
 		partidasEnJuego.remove(partida.getId());
 	}
 	
+	public void cambiarAvatar(String email,String ruta) throws Exception {
+	    UsuarioRegistrado.cambiarAvatar(email,ruta);
+	  }
+	public String avatar(String avatar) throws Exception {
+	     return UsuarioRegistrado.avatar(avatar);
+	  }
 }
 
 
